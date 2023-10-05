@@ -1,25 +1,12 @@
-#include <ntifs.h>
+#include "pch.h"
+#include "driver.hpp"
 
-
-extern "C" VOID DriverUnload(PDRIVER_OBJECT DriverObject)
-{
-    UNREFERENCED_PARAMETER(DriverObject);
-
-    return;
-}
-
-extern "C" NTSTATUS
+extern "C"
+NTSTATUS
 DriverEntry(
     _In_ PDRIVER_OBJECT DriverObject,
     _In_ PUNICODE_STRING RegistryPath
 )
 {
-    UNREFERENCED_PARAMETER(RegistryPath);
-    NTSTATUS status = STATUS_SUCCESS;
-
-    DriverObject->DriverUnload = DriverUnload;
-
-
-    
-    return status;
+    return Ark::Driver::Init(DriverObject, RegistryPath);
 }

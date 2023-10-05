@@ -8,10 +8,30 @@
     <Filter Include="third-party">
       <UniqueIdentifier>{090988b3-8efc-456b-a791-b5789eb807ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\modules">
+      <UniqueIdentifier>{0fec5350-a7e3-47d1-a404-91468715bdb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\WinsecArkDrv\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\WinsecArkDrv\pch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\WinsecArkDrv\pch.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkDrv\device.hpp">
+      <Filter>src\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkDrv\driver.hpp">
+      <Filter>src\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkDrv\logger.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

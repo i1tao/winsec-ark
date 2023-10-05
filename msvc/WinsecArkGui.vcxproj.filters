@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\third-party">
+      <UniqueIdentifier>{394363ee-6cb0-4c74-a98f-98c6d78ca2a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\third-party\imgui">
+      <UniqueIdentifier>{c61f6e37-3ca3-41a3-b466-cf3e0fbc44ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\third-party\imgui\backends">
+      <UniqueIdentifier>{c99f621e-426a-4587-aa8f-1ee4bdef0f9e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\WinsecArkGui\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\imgui\imgui.cpp">
+      <Filter>src\third-party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\imgui\imgui_demo.cpp">
+      <Filter>src\third-party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\imgui\imgui_draw.cpp">
+      <Filter>src\third-party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\imgui\imgui_tables.cpp">
+      <Filter>src\third-party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\imgui\imgui_widgets.cpp">
+      <Filter>src\third-party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\imgui\backends\imgui_impl_dx9.cpp">
+      <Filter>src\third-party\imgui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="..\third-party\imgui\backends\imgui_impl_win32.cpp">
+      <Filter>src\third-party\imgui\backends</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\third-party\imgui\imconfig.h">
+      <Filter>src\third-party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\imgui\imgui.h">
+      <Filter>src\third-party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\imgui\imgui_internal.h">
+      <Filter>src\third-party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\imgui\imstb_rectpack.h">
+      <Filter>src\third-party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\imgui\imstb_textedit.h">
+      <Filter>src\third-party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\imgui\imstb_truetype.h">
+      <Filter>src\third-party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\imgui\backends\imgui_impl_dx9.h">
+      <Filter>src\third-party\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="..\third-party\imgui\backends\imgui_impl_win32.h">
+      <Filter>src\third-party\imgui\backends</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

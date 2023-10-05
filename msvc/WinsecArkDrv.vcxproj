@@ -72,14 +72,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
     <EnableInf2cat>false</EnableInf2cat>
-    <OutDir>$(SolutionDir)..\build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
-    <IntDir>$(SolutionDir)..\build\.objs\$(MSBuildProjectName.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</IntDir>
+    <OutDir>$(SolutionDir)build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
+    <IntDir>$(SolutionDir)build\.objs\$(MSBuildProjectName.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
     <EnableInf2cat>false</EnableInf2cat>
-    <OutDir>$(SolutionDir)..\build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
-    <IntDir>$(SolutionDir)..\build\.objs\$(MSBuildProjectName.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</IntDir>
+    <OutDir>$(SolutionDir)build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
+    <IntDir>$(SolutionDir)build\.objs\$(MSBuildProjectName.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
@@ -93,6 +93,9 @@
     </DriverSign>
     <ClCompile>
       <AdditionalIncludeDirectories>third-party\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -101,23 +104,45 @@
     </DriverSign>
     <ClCompile>
       <AdditionalIncludeDirectories>third-party\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <DriverSign>
       <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
     </DriverSign>
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ClCompile>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <DriverSign>
       <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
     </DriverSign>
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ClCompile>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <FilesToPackage Include="$(TargetPath)" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\WinsecArkDrv\main.cpp" />
+    <ClCompile Include="..\src\WinsecArkDrv\pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\WinsecArkDrv\device.hpp" />
+    <ClInclude Include="..\src\WinsecArkDrv\driver.hpp" />
+    <ClInclude Include="..\src\WinsecArkDrv\logger.hpp" />
+    <ClInclude Include="..\src\WinsecArkDrv\pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

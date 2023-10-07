@@ -1,21 +1,16 @@
-﻿// Dear ImGui: standalone example application for DirectX 9
-
-// Learn about Dear ImGui:
-// - FAQ                  https://dearimgui.com/faq
-// - Getting Started      https://dearimgui.com/getting-started
-// - Documentation        https://dearimgui.com/docs (same as your local docs/ folder).
-// - Introduction, links and more at the top of imgui.cpp
-
-
-#pragma comment( linker, "/subsystem:windows /entry:mainCRTStartup" )
+﻿#pragma comment( linker, "/subsystem:windows /entry:mainCRTStartup" ) //hide consoles
 
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
 #include <d3d9.h>
 #include <tchar.h>
+#include <string>
 
 #pragma comment(lib,"d3d9.lib")
+
+
+#include "app.h"
 // Data
 static LPDIRECT3D9              g_pD3D = nullptr;
 static LPDIRECT3DDEVICE9        g_pd3dDevice = nullptr;
@@ -48,14 +43,17 @@ int main(int, char**)
 
     ::RegisterClassExW(&wc);
 
+    int screenWidth = ::GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = ::GetSystemMetrics(SM_CYSCREEN);
+
     HWND hwnd = ::CreateWindowW(
-        wc.lpszClassName, 
-        L"Winsec Anti-Rookit", 
-        WS_OVERLAPPEDWINDOW, 
-        100, 100, 1280, 800, 
-        nullptr, 
-        nullptr, 
-        wc.hInstance, 
+        wc.lpszClassName,
+        L"Winsec Anti-Rookit",
+        WS_OVERLAPPEDWINDOW,
+        screenWidth * 0.15, screenHeight * 0.15, screenWidth * 0.7, screenHeight * 0.7,
+        nullptr,
+        nullptr,
+        wc.hInstance,
         nullptr);
 
     // Initialize Direct3D
@@ -78,15 +76,24 @@ int main(int, char**)
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+
+    //io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    //io.ConfigFlags |= ImGuiViewportFlags_NoDecoration;
+    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    //io.ConfigFlags |= ImGuiCol_DockingEmptyBg;
+
+    //io.ConfigFlags |= ImGuiViewportFlags_NoDecoration;
+    //io.ConfigFlags |= ImGuiCol_DockingEmptyBg;
     //io.ConfigViewportsNoAutoMerge = true;
     //io.ConfigViewportsNoTaskBarIcon = true;
 
     // Setup Dear ImGui style
-    //ImGui::StyleColorsDark();
     ImGui::StyleColorsLight();
 
-    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
     ImGuiStyle& style = ImGui::GetStyle();
+
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         style.WindowRounding = 0.0f;
@@ -150,50 +157,19 @@ int main(int, char**)
         ImGui_ImplDX9_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
+        ImGui::DockSpaceOverViewport();
+        
 
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
+        //// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (show_demo_window)
             ImGui::ShowDemoWindow(&show_demo_window);
 
-        // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
-        {
-            static float f = 0.0f;
-            static int counter = 0;
+        //g_d3dpp.BackBufferWidth = g_ResizeWidth;
+        //g_d3dpp.BackBufferHeight = g_ResizeHeight;
+        App::DrawUI(g_d3dpp.BackBufferWidth, g_d3dpp.BackBufferHeight);
 
-            ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-            ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-            ImGui::Checkbox("Another Window", &show_another_window);
-
-            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-            if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-                counter++;
-            ImGui::SameLine();
-            ImGui::Text("counter = %d", counter);
-
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-            ImGui::End();
-        }
-
-        // 3. Show another simple window.
-        if (show_another_window)
-        {
-            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-            ImGui::Text("Hello from another window!");
-            if (ImGui::Button("Close Me"))
-                show_another_window = false;
-            ImGui::End();
-        }
-
-        ImGui::Begin("Test", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-        ImGui::Text("Test 1");
-        if (ImGui::Button("Close Me"))
-            show_another_window = false;
-        ImGui::End();
         // Rendering
+
         ImGui::EndFrame();
         g_pd3dDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
         g_pd3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);

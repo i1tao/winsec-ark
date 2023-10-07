@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\WinsecArkGui\app.cpp" />
     <ClCompile Include="..\src\WinsecArkGui\main.cpp" />
     <ClCompile Include="..\third-party\imgui\backends\imgui_impl_dx9.cpp" />
     <ClCompile Include="..\third-party\imgui\backends\imgui_impl_win32.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="..\third-party\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\WinsecArkGui\app.h" />
     <ClInclude Include="..\third-party\imgui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="..\third-party\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="..\third-party\imgui\imconfig.h" />
@@ -95,10 +97,12 @@
     <IntDir>$(SolutionDir)build\.objs\$(MSBuildProjectName.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)..\build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
+    <OutDir>$(SolutionDir)build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
+    <IntDir>$(SolutionDir)build\.objs\$(MSBuildProjectName.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)..\build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
+    <OutDir>$(SolutionDir)build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
+    <IntDir>$(SolutionDir)build\.objs\$(MSBuildProjectName.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)build\$(SDKIdentifier.ToLower())\$(PlatformShortName.ToLower())\$(Configuration.ToLower())\</OutDir>
@@ -116,6 +120,10 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -133,6 +141,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>del imgui.ini</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -146,6 +157,9 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>del imgui.ini</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -163,6 +177,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>del imgui.ini</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

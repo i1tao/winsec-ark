@@ -40,6 +40,9 @@
     <ClCompile Include="..\third-party\imgui\backends\imgui_impl_win32.cpp">
       <Filter>src\third-party\imgui\backends</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\WinsecArkGui\app.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\third-party\imgui\imconfig.h">
@@ -65,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="..\third-party\imgui\backends\imgui_impl_win32.h">
       <Filter>src\third-party\imgui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\app.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

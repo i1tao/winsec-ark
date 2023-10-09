@@ -9,7 +9,10 @@ namespace App
 
 
     void DrawUI(unsigned int weight,unsigned int height);
+
     void DrawMenuBar();
+    void DrawMainWindow(bool& isOpened);
+    void DrawCommandWindow(bool& isOpened);
     void DrawTabs();
 
 

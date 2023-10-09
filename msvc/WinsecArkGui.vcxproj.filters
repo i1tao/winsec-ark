@@ -72,5 +72,8 @@
     <ClInclude Include="..\src\WinsecArkGui\app.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\gui.hpp">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,15 +2,9 @@
 
 #include "imgui_internal.h"
 
-void App::DrawUI(unsigned int weight, unsigned int height)
+void App::DrawMainWindow(bool& isOpened)
 {
-    //Draw main window
-    static bool isMainWindowOpen = false;
-    static bool isOutputWindowOpen = false;
-
-    //DrawMenuBar();
-
-    ImGui::Begin(u8"MainWindow", &isMainWindowOpen,ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoTitleBar);
+    ImGui::Begin(u8"MainWindow", &isOpened,ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoTitleBar);
     ImGui::BeginTabBar("##tabs");
     if (ImGui::BeginTabItem(u8"进程(Process)"))
     {
@@ -25,23 +19,38 @@ void App::DrawUI(unsigned int weight, unsigned int height)
     
     ImGui::EndTabBar();
     ImGui::End();
+}
 
-    ImGui::Begin(u8"OutPut", &isOutputWindowOpen, ImGuiWindowFlags_AlwaysAutoResize);
+void App::DrawCommandWindow(bool& isOpened)
+{
+    ImGui::Begin(u8"Commands", &isOpened, ImGuiWindowFlags_AlwaysAutoResize);
 
     static char text[1024 * 16] =
         "/*\n"
         " Winsec Anti-Rookit load success !\n"
         "*/\n\n";
 
-    ImGui::InputTextMultiline("##source", text, IM_ARRAYSIZE(text), ImVec2(-FLT_MIN, -FLT_MIN), ImGuiInputTextFlags_ReadOnly);
+    ImGui::InputTextMultiline("##source", text, IM_ARRAYSIZE(text), ImVec2(-FLT_MIN, -FLT_MIN - 30), ImGuiInputTextFlags_ReadOnly);
+    static char str0[128] = "";
+    ImGui::PushItemWidth(-120);
+    ImGui::InputTextWithHint("->", u8"请输入命令(Please input your command)", str0, 256); ImGui::SameLine();
+    ImGui::Button(u8"执行(Run)"); ImGui::SameLine();
 
     ImGui::End();
+}
 
-    ImGui::Begin(u8"Command", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    static char str0[128] = u8"请输入命令";
-    ImGui::InputText("->", str0,64); ImGui::SameLine();
-    ImGui::Button(u8"执行"); ImGui::SameLine();
-    ImGui::End();
+void App::DrawUI(unsigned int weight, unsigned int height)
+{
+    //Draw main window
+    static bool isMainWindowOpen = false;
+    static bool isCommandWindowOpen = false;
+
+    DrawMenuBar();
+
+    DrawMainWindow(isMainWindowOpen);
+    DrawCommandWindow(isCommandWindowOpen);
+    
+
     //DrawTabs();
 
 
@@ -112,8 +121,6 @@ void App::ShowAbout(bool* isShowAbout)
     ImGui::Text(u8"           IMGUI");
     ImGui::Separator();
     ImGui::Text(u8"Copyright © 2023 i1tao. All rights reserved.");
-
-
 
     ImGui::End();
 }

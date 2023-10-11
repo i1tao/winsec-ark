@@ -4,11 +4,46 @@
 
 void App::DrawMainWindow(bool& isOpened)
 {
-    ImGui::Begin(u8"MainWindow", &isOpened,ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoTitleBar);
+    ImGui::Begin(u8"MainWindow", &isOpened, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
     ImGui::BeginTabBar("##tabs");
     if (ImGui::BeginTabItem(u8"进程(Process)"))
     {
+        static ImGuiTableFlags flags = ImGuiTableFlags_ScrollX
+            | ImGuiTableFlags_ScrollY
+            | ImGuiTableFlags_RowBg
+            | ImGuiTableFlags_BordersOuter
+            | ImGuiTableFlags_BordersV
+            | ImGuiTableFlags_Resizable
+            | ImGuiTableFlags_Reorderable
+            | ImGuiTableFlags_Hideable
+            | ImGuiTableFlags_Sortable;
 
+        ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
+        if (ImGui::BeginTable("table_process", 3, flags, outer_size))
+        {
+            ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
+            ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_None);
+            ImGui::TableSetupColumn("PID", ImGuiTableColumnFlags_None);
+            ImGui::TableSetupColumn("Eprocess", ImGuiTableColumnFlags_None);
+            ImGui::TableHeadersRow();
+
+            // Demonstrate using clipper for large vertical lists
+            ImGuiListClipper clipper;
+            clipper.Begin(5);
+            while (clipper.Step())
+            {
+                for (int row = clipper.DisplayStart; row < clipper.DisplayEnd; row++)
+                {
+                    ImGui::TableNextRow();
+                    for (int column = 0; column < 3; column++)
+                    {
+                        ImGui::TableSetColumnIndex(column);
+                        ImGui::Text("%d Hello %d,%d          ",row, column, row);
+                    }
+                }
+            }
+            ImGui::EndTable();
+        }
         ImGui::EndTabItem();
     }
     if (ImGui::BeginTabItem(u8"驱动(Drivers)"))
@@ -16,7 +51,7 @@ void App::DrawMainWindow(bool& isOpened)
 
         ImGui::EndTabItem();
     }
-    
+
     ImGui::EndTabBar();
     ImGui::End();
 }
@@ -49,7 +84,7 @@ void App::DrawUI(unsigned int weight, unsigned int height)
 
     DrawMainWindow(isMainWindowOpen);
     DrawCommandWindow(isCommandWindowOpen);
-    
+
 
     //DrawTabs();
 
@@ -95,6 +130,7 @@ void App::DrawTabs()
 
     if (ImGui::BeginTabBar("##tabs", ImGuiTabBarFlags_None))
     {
+        ImGui::Button("hello");
         if (ImGui::BeginTabItem(u8"进程(Process)"))
         {
 

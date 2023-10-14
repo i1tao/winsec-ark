@@ -14,6 +14,12 @@
     <Filter Include="src\third-party\imgui\backends">
       <UniqueIdentifier>{c99f621e-426a-4587-aa8f-1ee4bdef0f9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\window">
+      <UniqueIdentifier>{3ad55019-238c-4af0-8107-d45a5d7b7e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dialog">
+      <UniqueIdentifier>{4a13bb51-5c3b-4ebd-ac60-f78b3ab92530}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\WinsecArkGui\main.cpp">
@@ -74,6 +80,18 @@
     </ClInclude>
     <ClInclude Include="..\src\WinsecArkGui\gui.hpp">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\window\kernel.hpp">
+      <Filter>src\window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\window\process.hpp">
+      <Filter>src\window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\dialog\about.hpp">
+      <Filter>src\dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\window\command.hpp">
+      <Filter>src\window</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

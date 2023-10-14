@@ -31,7 +31,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\WinsecArkGui\app.h" />
+    <ClInclude Include="..\src\WinsecArkGui\dialog\about.hpp" />
     <ClInclude Include="..\src\WinsecArkGui\gui.hpp" />
+    <ClInclude Include="..\src\WinsecArkGui\window\command.hpp" />
+    <ClInclude Include="..\src\WinsecArkGui\window\kernel.hpp" />
+    <ClInclude Include="..\src\WinsecArkGui\window\process.hpp" />
     <ClInclude Include="..\third-party\imgui\backends\imgui_impl_dx9.h" />
     <ClInclude Include="..\third-party\imgui\backends\imgui_impl_win32.h" />
     <ClInclude Include="..\third-party\imgui\imconfig.h" />

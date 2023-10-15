@@ -26,14 +26,15 @@ namespace App
                         | ImGuiTableFlags_Sortable;
 
                     auto outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
-                    if (ImGui::BeginTable("table_kernel", 5, flags, outer_size))
+                    if (ImGui::BeginTable("table_kernel", 6, flags, outer_size))
                     {
                         ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
+                        ImGui::TableSetupColumn("Load Order", ImGuiTableColumnFlags_None);
                         ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_None);
                         ImGui::TableSetupColumn("Base", ImGuiTableColumnFlags_None);
                         ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Load Order", ImGuiTableColumnFlags_None);
                         ImGui::TableSetupColumn("Path", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn("Description", ImGuiTableColumnFlags_None);
                         ImGui::TableHeadersRow();
 
                         // Demonstrate using clipper for large vertical lists

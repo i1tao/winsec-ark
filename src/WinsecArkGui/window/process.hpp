@@ -23,7 +23,8 @@ namespace App
                         | ImGuiTableFlags_Resizable
                         | ImGuiTableFlags_Reorderable
                         | ImGuiTableFlags_Hideable
-                        | ImGuiTableFlags_Sortable;
+                        | ImGuiTableFlags_Sortable
+                    |ImGuiTableFlags_SortMulti;
 
                     ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
                     if (ImGui::BeginTable("table_process", 5, flags, outer_size))

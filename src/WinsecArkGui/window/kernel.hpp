@@ -26,15 +26,15 @@ namespace App
                         | ImGuiTableFlags_Sortable;
 
                     auto outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
-                    if (ImGui::BeginTable("table_kernel", 6, flags, outer_size))
+                    if (ImGui::BeginTable(u8"table_kernel", 6, flags, outer_size))
                     {
                         ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
-                        ImGui::TableSetupColumn("Load Order", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Base", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Size", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Path", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Description", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Load Order", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Name", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Base", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Size", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Path", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Description", ImGuiTableColumnFlags_None);
                         ImGui::TableHeadersRow();
 
                         // Demonstrate using clipper for large vertical lists
@@ -48,7 +48,7 @@ namespace App
                                 for (int column = 0; column < 3; column++)
                                 {
                                     ImGui::TableSetColumnIndex(column);
-                                    ImGui::Text("1%d Hello %d,%d          ", row, column, row);
+                                    ImGui::Text(u8"1%d Hello %d,%d          ", row, column, row);
                                 }
                             }
                         }

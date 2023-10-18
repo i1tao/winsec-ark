@@ -22,7 +22,7 @@ void App::DrawMenuBar()
 
     if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::BeginMenu("File"))
+        if (ImGui::BeginMenu(u8"File"))
         {
 
             ImGui::EndMenu();
@@ -39,7 +39,7 @@ void App::DrawMenuBar()
         }
         if (ImGui::BeginMenu(u8"关于"))
         {
-            ImGui::MenuItem("About", nullptr, &App::Dialog::About::isShow);
+            ImGui::MenuItem(u8"About", nullptr, &App::Dialog::About::isShow);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();

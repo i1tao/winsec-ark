@@ -30,11 +30,11 @@ namespace App
                     if (ImGui::BeginTable("table_process", 5, flags, outer_size))
                     {
                         ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
-                        ImGui::TableSetupColumn("PID", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("EPROCESS", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Path", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn("Description", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"PID", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Name", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"EPROCESS", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Path", ImGuiTableColumnFlags_None);
+                        ImGui::TableSetupColumn(u8"Description", ImGuiTableColumnFlags_None);
                         ImGui::TableHeadersRow();
 
                         // Demonstrate using clipper for large vertical lists
@@ -49,6 +49,17 @@ namespace App
                                 {
                                     ImGui::TableSetColumnIndex(column);
                                     ImGui::Text("%d Hello %d,%d          ", row, column, row);
+
+                                    if (ImGui::IsItemHovered()) {
+                                        // 在悬停时可以高亮当前行
+                                        //ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg1, ImGui::GetColorU32(ImGuiCol_TableRowBgHovered));
+                                    }
+
+                                    // 使用 IsItemClicked() 检测项目是否被点击
+                                    if (ImGui::IsItemClicked()) {
+                                        // 在这里可以处理选中该项目的逻辑，例如，记录选中的项目或执行某些操作
+                                        //selected_item = i;
+                                    }
                                 }
                             }
                         }

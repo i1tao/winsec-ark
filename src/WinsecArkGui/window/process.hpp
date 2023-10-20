@@ -11,8 +11,9 @@ namespace App
         {
 
 
-            static bool isOpen = true ;
-            static bool selectedRow[10] = { false };
+            static bool isOpen = true;
+            static ImVector<int> selection;
+
             void Draw()
             {
                 if (isOpen)
@@ -26,7 +27,7 @@ namespace App
                         | ImGuiTableFlags_SizingFixedFit;
 
                     ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
-                    if (ImGui::BeginTable("table_process", 5, flags, outer_size))
+                    if (ImGui::BeginTable("table_process", 6, flags, outer_size))
                     {
                         ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
                         ImGui::TableSetupColumn(u8"PID", ImGuiTableColumnFlags_None);
@@ -36,46 +37,62 @@ namespace App
                         ImGui::TableSetupColumn(u8"Description", ImGuiTableColumnFlags_None);
                         ImGui::TableHeadersRow();
 
-                        static int selectedRow = -1;
-                        // Demonstrate using clipper for large vertical lists
+                        static int select_row = -1;
+                        static float row_min_height = 0.0f;
                         for (int i = 0; i < 10; i++)
                         {
-                            ImGui::TableNextRow();
-
+                            const bool item_is_selected = (select_row == i);
+                            ImGui::PushID(i);
+                            ImGui::TableNextRow(ImGuiTableRowFlags_None, row_min_height);
                             ImGui::TableSetColumnIndex(0);
 
-                            ImGui::Selectable("Index", selectedRow == i, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap, ImVec2(0, 0));
-                            ImGui::TableNextColumn();
-                            ImGui::Text("Data %d", i + 1);
+                            if (ImGui::Selectable("Index", item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap, ImVec2(0, row_min_height)))
+                            {
+                                if (item_is_selected)
+                                {
+                                    select_row = -1;
+                                }
+                                else
+                                {
+                                    select_row = i;
+                                }
 
-                            ImGui::TableNextColumn();
-                            ImGui::Text("Value %d", i + 1);
+                                
+                            }
+                            
+                            if (ImGui::TableSetColumnIndex(1))
+                                ImGui::Text("Data %d", i + 1);
 
-                            ImGui::TableNextColumn();
-                            ImGui::Text("Item %d", i + 1);
+                            if (ImGui::TableSetColumnIndex(2))
+                                ImGui::Text("Value %d", i + 1);
 
-                            ImGui::TableNextColumn();
-                            ImGui::Text("Amount %d", i + 1);
+                            if (ImGui::TableSetColumnIndex(3))
+                                ImGui::Text("Item %d", i + 1);
 
-                            // 监听行是否被点击并选中
-
-                            //if (ImGui::IsItemClicked(0))
-                            //{
-                            //    selectedRow = i;
-                            //}
-                            ////if (ImGui::Selectable("label", selectedRow, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap, ImVec2(0, 0)))
-                            ////{
-                            ////    selectedRow = i;
-                            ////}
-
-                            //if (selectedRow == i)
-                            //{
-                            //    ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0, IM_COL32(0, 100, 0, 255));
-                            //}
+                            if (ImGui::TableSetColumnIndex(4))
+                                ImGui::Text("Amount %d", i + 1);
+                            if (ImGui::TableSetColumnIndex(5))
+                            if(ImGui::SmallButton(u8"button"))
+                            {
+                                ImGui::OpenPopup("ContextMenu");
+                                
+                            }
+                            
+                            if (ImGui::BeginPopup("ContextMenu"))
+                            {
+                                if (ImGui::MenuItem("Edit"))
+                                {
+                                    // 在这里处理编辑操作
+                                }
+                                if (ImGui::MenuItem("Delete"))
+                                {
+                                    // 在这里处理删除操作
+                                }
+                                ImGui::EndPopup();
+                            }
+                            ImGui::PopID();
                         }
-                        
-                        // 判断当前行是否被选中，若是，设置高亮颜色
-                        
+
                         ImGui::EndTable();
                     }
                     ImGui::End();

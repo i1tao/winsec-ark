@@ -24,12 +24,13 @@ namespace App
                         | ImGuiTableFlags_Sortable | ImGuiTableFlags_SortMulti
                         | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_NoBordersInBody
                         | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY
-                        | ImGuiTableFlags_SizingFixedFit;
+                        | ImGuiTableFlags_SizingFixedFit| ImGuiTableFlags_ContextMenuInBody;
 
                     ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
                     if (ImGui::BeginTable("table_process", 6, flags, outer_size))
                     {
                         ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
+                        ImGui::TableSetupColumn(u8"Option", ImGuiTableColumnFlags_None);
                         ImGui::TableSetupColumn(u8"PID", ImGuiTableColumnFlags_None);
                         ImGui::TableSetupColumn(u8"Name", ImGuiTableColumnFlags_None);
                         ImGui::TableSetupColumn(u8"EPROCESS", ImGuiTableColumnFlags_None);
@@ -44,8 +45,17 @@ namespace App
                             const bool item_is_selected = (select_row == i);
                             ImGui::PushID(i);
                             ImGui::TableNextRow(ImGuiTableRowFlags_None, row_min_height);
-                            ImGui::TableSetColumnIndex(0);
+                            
+                            if (ImGui::TableSetColumnIndex(0))
+                            {
+                                if (ImGui::SmallButton(u8"op"))
+                                {
+                                    ImGui::OpenPopup("ContextMenu");
 
+                                }
+
+                            }
+                            ImGui::TableNextColumn();
                             if (ImGui::Selectable("Index", item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap, ImVec2(0, row_min_height)))
                             {
                                 if (item_is_selected)
@@ -56,27 +66,19 @@ namespace App
                                 {
                                     select_row = i;
                                 }
-
-                                
                             }
-                            
-                            if (ImGui::TableSetColumnIndex(1))
+
+                            if (ImGui::TableNextColumn())
                                 ImGui::Text("Data %d", i + 1);
 
-                            if (ImGui::TableSetColumnIndex(2))
+                            if (ImGui::TableNextColumn())
                                 ImGui::Text("Value %d", i + 1);
 
-                            if (ImGui::TableSetColumnIndex(3))
+                            if (ImGui::TableNextColumn())
                                 ImGui::Text("Item %d", i + 1);
 
-                            if (ImGui::TableSetColumnIndex(4))
+                            if (ImGui::TableNextColumn())
                                 ImGui::Text("Amount %d", i + 1);
-                            if (ImGui::TableSetColumnIndex(5))
-                            if(ImGui::SmallButton(u8"button"))
-                            {
-                                ImGui::OpenPopup("ContextMenu");
-                                
-                            }
                             
                             if (ImGui::BeginPopup("ContextMenu"))
                             {

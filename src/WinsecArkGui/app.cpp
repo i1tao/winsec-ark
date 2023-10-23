@@ -5,57 +5,6 @@
 #include "window/process.hpp"
 #include "window/command.hpp"
 
-void RenderUI()
-{
-    static bool isOpen = false;
-    ImGui::Begin(u8"测试", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
-    static ImGuiTableFlags flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_ContextMenuInBody;
-
-    if (ImGui::BeginTable("Table", 3, flags))
-    {
-        // 设置表头
-        ImGui::TableSetupColumn("Column 1");
-        ImGui::TableSetupColumn("Column 2");
-        ImGui::TableSetupColumn("Column 3");
-        ImGui::TableHeadersRow();
-
-        // 添加表格内容
-        for (int row = 0; row < 5; row++)
-        {
-            ImGui::TableNextRow();
-
-            for (int column = 0; column < 3; column++)
-            {
-                ImGui::TableSetColumnIndex(column);
-
-                // 在每一行的每一列中绘制内容
-                ImGui::Text("Row %d, Column %d", row, column);
-
-                // 检查鼠标是否悬停在某一行上
-                if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-                {
-                    // 选中整行
-                    ImGui::TableSetBgColor(ImGuiTableBgTarget_RowBg0 + row, ImGui::GetColorU32(ImGuiCol_HeaderActive));
-                }
-            }
-        }
-
-        ImGui::EndTable();
-    }
-
-    // 右键菜单
-    if (ImGui::BeginPopupContextWindow())
-    {
-        if (ImGui::Selectable("菜单项"))
-        {
-            // 在这里处理菜单项的逻辑
-        }
-
-        ImGui::EndPopup();
-    }
-
-    ImGui::End();
-}
 
 void App::DrawUI(unsigned int weight, unsigned int height)
 {
@@ -67,7 +16,6 @@ void App::DrawUI(unsigned int weight, unsigned int height)
     Window::CommandWindow::Draw();
     Dialog::About::Draw();
 
-    RenderUI();
 
 }
 

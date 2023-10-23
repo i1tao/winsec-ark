@@ -13,18 +13,14 @@ namespace App
 
             static bool isOpen = true;
             static ImVector<int> selection;
-
+            static int select_row = -1;
             void Draw()
             {
                 if (isOpen)
                 {
                     ImGui::Begin(u8"进程(Process)", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
                     static ImGuiTableFlags flags =
-                        ImGuiTableFlags_Resizable | ImGuiTableFlags_Reorderable | ImGuiTableFlags_Hideable
-                        | ImGuiTableFlags_Sortable | ImGuiTableFlags_SortMulti
-                        | ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_NoBordersInBody
-                        | ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY
-                        | ImGuiTableFlags_SizingFixedFit| ImGuiTableFlags_ContextMenuInBody;
+                        ImGuiTableFlags_RowBg | ImGuiTableFlags_ContextMenuInBody;
 
                     ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
                     if (ImGui::BeginTable("table_process", 6, flags, outer_size))
@@ -38,7 +34,7 @@ namespace App
                         ImGui::TableSetupColumn(u8"Description", ImGuiTableColumnFlags_None);
                         ImGui::TableHeadersRow();
 
-                        static int select_row = -1;
+
                         static float row_min_height = 0.0f;
                         for (int i = 0; i < 10; i++)
                         {
@@ -79,23 +75,25 @@ namespace App
 
                             if (ImGui::TableNextColumn())
                                 ImGui::Text("Amount %d", i + 1);
-                            
-                            if (ImGui::BeginPopup("ContextMenu"))
-                            {
-                                if (ImGui::MenuItem("Edit"))
-                                {
-                                    // 在这里处理编辑操作
-                                }
-                                if (ImGui::MenuItem("Delete"))
-                                {
-                                    // 在这里处理删除操作
-                                }
-                                ImGui::EndPopup();
-                            }
+
                             ImGui::PopID();
                         }
 
                         ImGui::EndTable();
+                    }
+
+
+                    if (select_row != -1 && ImGui::IsMouseReleased(ImGuiMouseButton_Right))
+                    {
+                        if (ImGui::BeginPopupContextWindow())
+                        {
+                            if (ImGui::Selectable(u8"菜单项"))
+                            {
+                                // 在这里处理菜单项的逻辑
+                            }
+
+                            ImGui::EndPopup();
+                        }
                     }
                     ImGui::End();
                 }
@@ -103,3 +101,4 @@ namespace App
         }
     }
 }
+

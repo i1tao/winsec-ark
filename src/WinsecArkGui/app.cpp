@@ -31,12 +31,9 @@ void App::DrawMenuBar()
         }
         if (ImGui::BeginMenu(u8"查看"))
         {
-            if (ImGui::MenuItem(u8"进程窗口")) {}
-            if (ImGui::MenuItem(u8"Redo")) {}  // Disabled item
+            if (ImGui::MenuItem(u8"进程窗口(Process)")) {}
+            if (ImGui::MenuItem(u8"内核模块(Kernel Modules)")) {}
             ImGui::Separator();
-            if (ImGui::MenuItem(u8"Cut")) {}
-            if (ImGui::MenuItem(u8"Copy")) {}
-            if (ImGui::MenuItem(u8"Paste")) {}
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu(u8"关于"))

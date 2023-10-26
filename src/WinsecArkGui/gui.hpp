@@ -177,7 +177,7 @@ namespace Gui
 
         ImFont* font = io.Fonts->AddFontFromFileTTF(
             "C:/Windows/Fonts/msyh.ttc",
-            20,
+            18,
             nullptr,
             io.Fonts->GetGlyphRangesChineseFull()
         );

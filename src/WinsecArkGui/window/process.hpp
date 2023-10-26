@@ -1,5 +1,6 @@
 #pragma once
 
+#include "command.hpp"
 #include "imgui.h"
 
 
@@ -9,63 +10,69 @@ namespace App
     {
         namespace ProcessWindow
         {
-
-
             static bool isOpen = true;
-            static ImVector<int> selection;
             static int select_row = -1;
+
+            static char column_names[][16] = {
+                u8"PID",
+                u8"Name",
+                u8"EPROCESS",
+                u8"Path",
+                u8"Description"
+            };
+
             void Draw()
             {
                 if (isOpen)
                 {
                     ImGui::Begin(u8"进程(Process)", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
                     static ImGuiTableFlags flags =
-                        ImGuiTableFlags_RowBg | ImGuiTableFlags_ContextMenuInBody;
+                        ImGuiTableFlags_RowBg
+                        | ImGuiTableFlags_ContextMenuInBody
+                        | ImGuiTableFlags_ScrollX
+                        | ImGuiTableFlags_ScrollY
+                        | ImGuiTableFlags_BordersOuter
+                        | ImGuiTableFlags_BordersV
+                        | ImGuiTableFlags_BordersH
+                        | ImGuiTableFlags_Sortable
+                        ;
 
-                    ImVec2 outer_size = ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8);
-                    if (ImGui::BeginTable("table_process", 6, flags, outer_size))
+                    if (ImGui::BeginTable("table_process", 6, flags, ImVec2(0.0f, ImGui::GetTextLineHeightWithSpacing() * 8)))
                     {
-                        ImGui::TableSetupScrollFreeze(0, 1); // Make top row always visible
-                        ImGui::TableSetupColumn(u8"Option", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn(u8"PID", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn(u8"Name", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn(u8"EPROCESS", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn(u8"Path", ImGuiTableColumnFlags_None);
-                        ImGui::TableSetupColumn(u8"Description", ImGuiTableColumnFlags_None);
+                        for (size_t i = 0; i < std::size(column_names); i++)
+                        {
+                            ImGui::TableSetupColumn(column_names[i], ImGuiTableColumnFlags_DefaultSort | ImGuiTableColumnFlags_WidthFixed, 0.0f, i);
+                        }
+                        ImGui::TableSetupScrollFreeze(0, 1); // Make row always visible
                         ImGui::TableHeadersRow();
-
-
                         static float row_min_height = 0.0f;
                         for (int i = 0; i < 10; i++)
                         {
-                            const bool item_is_selected = (select_row == i);
+                            //const bool item_is_selected = (select_row == i);
                             ImGui::PushID(i);
                             ImGui::TableNextRow(ImGuiTableRowFlags_None, row_min_height);
-                            
-                            if (ImGui::TableSetColumnIndex(0))
+
+                            ImGui::TableSetColumnIndex(0);
+                            if (ImGui::Selectable("Index", select_row == i, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap, ImVec2(0, row_min_height)))
                             {
-                                if (ImGui::SmallButton(u8"op"))
-                                {
-                                    ImGui::OpenPopup("ContextMenu");
-
-                                }
-
+                                select_row = i;
                             }
-                            ImGui::TableNextColumn();
-                            if (ImGui::Selectable("Index", item_is_selected, ImGuiSelectableFlags_SpanAllColumns | ImGuiSelectableFlags_AllowOverlap, ImVec2(0, row_min_height)))
+
+                            if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
                             {
-                                if (item_is_selected)
+                                select_row = i;
+                                ImGui::Text("This a popup for \"%d\"!", i);
+                                if (ImGui::MenuItem(u8"结束进程"))
                                 {
-                                    select_row = -1;
+                                    int n = 9;
                                 }
-                                else
-                                {
-                                    select_row = i;
-                                }
+  /*                              if (ImGui::Button("Close"))
+                                    ImGui::CloseCurrentPopup();*/
+                                ImGui::EndPopup();
                             }
 
                             if (ImGui::TableNextColumn())
-                                ImGui::Text("Data %d", i + 1);
+                                ImGui::Text("%d", i + 1);
 
                             if (ImGui::TableNextColumn())
                                 ImGui::Text("Value %d", i + 1);
@@ -79,22 +86,11 @@ namespace App
                             ImGui::PopID();
                         }
 
+
                         ImGui::EndTable();
                     }
 
 
-                    if (select_row != -1 && ImGui::IsMouseReleased(ImGuiMouseButton_Right))
-                    {
-                        if (ImGui::BeginPopupContextWindow())
-                        {
-                            if (ImGui::Selectable(u8"菜单项"))
-                            {
-                                // 在这里处理菜单项的逻辑
-                            }
-
-                            ImGui::EndPopup();
-                        }
-                    }
                     ImGui::End();
                 }
             }

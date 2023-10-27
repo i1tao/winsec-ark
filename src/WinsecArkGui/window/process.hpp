@@ -21,6 +21,57 @@ namespace App
                 u8"Description"
             };
 
+            void RightClickMenu(int idx)
+            {
+                select_row = idx;           //
+                if (ImGui::BeginPopupContextItem())
+                {
+                    if (ImGui::MenuItem(u8"刷新列表(Refresh)"))
+                    {
+                        int n = 9;
+                    }
+                    ImGui::Separator();
+                    if (ImGui::MenuItem(u8"结束进程(Kill Process)"))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(u8"强制结束进程(Force Kill Process)"))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(u8"隐藏进程(Hide Process)"))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(u8"暂停进程(Suspend)"))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(u8"恢复运行(Resume)"))
+                    {
+                        int n = 9;
+                    }
+                    ImGui::Separator();
+                    if (ImGui::MenuItem(u8"查看模块(View Modules)"))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(u8"查看线程(View Threads)"))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(u8"查看窗口(View Windows)"))
+                    {
+                        int n = 9;
+                    }
+                    ImGui::Separator();
+                    if (ImGui::MenuItem(u8"属性(Properties)"))
+                    {
+                        int n = 9;
+                    }
+                    ImGui::EndPopup();
+                }
+            }
             void Draw()
             {
                 if (isOpen)
@@ -48,7 +99,6 @@ namespace App
                         static float row_min_height = 0.0f;
                         for (int i = 0; i < 10; i++)
                         {
-                            //const bool item_is_selected = (select_row == i);
                             ImGui::PushID(i);
                             ImGui::TableNextRow(ImGuiTableRowFlags_None, row_min_height);
 
@@ -58,18 +108,7 @@ namespace App
                                 select_row = i;
                             }
 
-                            if (ImGui::BeginPopupContextItem()) // <-- use last item id as popup id
-                            {
-                                select_row = i;
-                                ImGui::Text("This a popup for \"%d\"!", i);
-                                if (ImGui::MenuItem(u8"结束进程"))
-                                {
-                                    int n = 9;
-                                }
-  /*                              if (ImGui::Button("Close"))
-                                    ImGui::CloseCurrentPopup();*/
-                                ImGui::EndPopup();
-                            }
+                            RightClickMenu(i);
 
                             if (ImGui::TableNextColumn())
                                 ImGui::Text("%d", i + 1);

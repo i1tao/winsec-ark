@@ -12,10 +12,13 @@ namespace Ark::Device
 	BOOLEAN		   g_IsSymbolLinkCreated = false;
 
 	NTSTATUS InitDevice(PDRIVER_OBJECT driverObject);
+	NTSTATUS UnInitDevice();
 
     NTSTATUS CreateDevice(PDRIVER_OBJECT driverObject);
 	NTSTATUS CreateSymbolLinkName();
 	NTSTATUS RegisterShutdownNotification(PDEVICE_OBJECT deviceObject);
+
+	
 
 	
 }
@@ -24,7 +27,6 @@ namespace Ark::Device
 NTSTATUS Ark::Device::InitDevice(PDRIVER_OBJECT driverObject)
 {
 	NTSTATUS status = STATUS_SUCCESS;
-
     do
     {
 		status = CreateDevice(driverObject);
@@ -73,18 +75,35 @@ NTSTATUS Ark::Device::InitDevice(PDRIVER_OBJECT driverObject)
 	return status;
 }
 
+NTSTATUS Ark::Device::UnInitDevice()
+{
+	NTSTATUS status = STATUS_SUCCESS;
+
+	if (g_IsSymbolLinkCreated)
+	{
+		status = IoDeleteSymbolicLink(&g_SymbolLinkName);
+	}
+
+	if (g_DeviceObject)
+	{
+		IoDeleteDevice(g_DeviceObject);
+	}
+
+	return status;
+}
+
 NTSTATUS Ark::Device::CreateDevice(PDRIVER_OBJECT driverObject)
 {
 	NTSTATUS status = STATUS_SUCCESS;
 
 	status = IoCreateDevice(
-		driverObject,		// our driver object,
-		0,					// no need for extra bytes
-		&g_DeviceName,			// the device name
-		FILE_DEVICE_UNKNOWN,// device type
-		0,					// characteristics flags,
-		FALSE,				// not exclusive
-		&g_DeviceObject		// the resulting pointer
+		driverObject,		
+		0,					
+		&g_DeviceName,		
+		FILE_DEVICE_UNKNOWN,
+		0,					
+		FALSE,				
+		&g_DeviceObject		
 	);
 	return status;
 }
@@ -104,6 +123,7 @@ NTSTATUS Ark::Device::RegisterShutdownNotification(PDEVICE_OBJECT deviceObject)
 	return status;
 
 }
+
 
 
 #endif

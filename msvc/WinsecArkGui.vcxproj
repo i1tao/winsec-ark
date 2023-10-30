@@ -33,6 +33,7 @@
     <ClInclude Include="..\src\WinsecArkGui\app.h" />
     <ClInclude Include="..\src\WinsecArkGui\dialog\about.hpp" />
     <ClInclude Include="..\src\WinsecArkGui\gui.hpp" />
+    <ClInclude Include="..\src\WinsecArkGui\service\service.hpp" />
     <ClInclude Include="..\src\WinsecArkGui\window\command.hpp" />
     <ClInclude Include="..\src\WinsecArkGui\window\kernel.hpp" />
     <ClInclude Include="..\src\WinsecArkGui\window\process.hpp" />
@@ -83,6 +84,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+    <Import Project="..\msvc\DrvControl.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />

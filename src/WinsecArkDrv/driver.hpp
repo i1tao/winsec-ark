@@ -24,7 +24,9 @@ namespace Ark::Driver
 VOID Ark::Driver::Unload(PDRIVER_OBJECT driverObject)
 {
     UNREFERENCED_PARAMETER(driverObject);
-    return VOID();
+    Ark::Device::UnInitDevice();
+
+    return;
 }
 
 NTSTATUS Ark::Driver::Init(PDRIVER_OBJECT driverObject, PUNICODE_STRING registryPath)
@@ -44,6 +46,8 @@ NTSTATUS Ark::Driver::Init(PDRIVER_OBJECT driverObject, PUNICODE_STRING registry
     {
         driverObject->MajorFunction[i] = DispatchDefault;
     }
+
+    driverObject->Flags |= DO_BUFFERED_IO;
 
     driverObject->MajorFunction[IRP_MJ_CREATE] = DispatchCreate;
     driverObject->MajorFunction[IRP_MJ_CLOSE] = DispatchClose;
@@ -112,15 +116,9 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT deviceObject, PIRP irp)
 {
     UNREFERENCED_PARAMETER(deviceObject);
     UNREFERENCED_PARAMETER(irp);
+
+
     return STATUS_SUCCESS;
 }
-
-
-
-
-
-
-
-
 
 #endif

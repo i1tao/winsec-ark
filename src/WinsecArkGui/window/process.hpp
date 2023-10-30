@@ -23,7 +23,7 @@ namespace App
 
             void RightClickMenu(int idx)
             {
-                select_row = idx;           //
+                select_row = idx;
                 if (ImGui::BeginPopupContextItem())
                 {
                     if (ImGui::MenuItem(u8"Ë¢ÐÂÁÐ±í(Refresh)"))

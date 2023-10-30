@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinsecArkDrv", "msvc\Winsec
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WinsecArkGui", "msvc\WinsecArkGui.vcxproj", "{3F73BCEC-22B1-4720-95C1-1677C7D3EAE9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrvControl", "msvc\DrvControl.vcxitems", "{9307172F-C2EB-433B-9724-D9D1CED099F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -51,5 +53,10 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4108338E-7A5C-464C-8E70-4059389264C7}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		msvc\DrvControl.vcxitems*{3b7b0d4d-ee95-44fa-a6b7-c3563d740f75}*SharedItemsImports = 4
+		msvc\DrvControl.vcxitems*{3f73bcec-22b1-4720-95c1-1677c7d3eae9}*SharedItemsImports = 4
+		msvc\DrvControl.vcxitems*{9307172f-c2eb-433b-9724-d9d1ced099f5}*SharedItemsImports = 9
 	EndGlobalSection
 EndGlobal

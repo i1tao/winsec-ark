@@ -30,8 +30,14 @@
     <ClInclude Include="..\src\WinsecArkDrv\driver.hpp">
       <Filter>src\modules</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\DrvControl\driver_struct.h">
+      <Filter>src\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkDrv\controller.hpp">
+      <Filter>src\modules</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\WinsecArkDrv\logger.hpp">
-      <Filter>src</Filter>
+      <Filter>src\third-party</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

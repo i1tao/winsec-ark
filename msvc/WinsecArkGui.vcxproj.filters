@@ -93,5 +93,6 @@
     <ClInclude Include="..\src\WinsecArkGui\window\command.hpp">
       <Filter>src\window</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\service\service.hpp" />
   </ItemGroup>
 </Project>

@@ -2,9 +2,10 @@
 #define DRIVER_HPP
 
 #include "pch.h"
-
+#include "logger.hpp"
 #include "device.hpp"
-//#include "logger.hpp"
+#include "controller.hpp"
+
 
 namespace Ark::Driver
 {
@@ -114,11 +115,17 @@ NTSTATUS Ark::Driver::DispatchShutdown(PDEVICE_OBJECT deviceObject, PIRP irp)
 
 NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT deviceObject, PIRP irp)
 {
-    UNREFERENCED_PARAMETER(deviceObject);
-    UNREFERENCED_PARAMETER(irp);
+    auto IrpStackLocation = IoGetCurrentIrpStackLocation(irp);
+    if (IrpStackLocation->Parameters.DeviceIoControl.IoControlCode != IoControlCode)
+    {
+        irp->IoStatus.Status = -1;
+        irp->IoStatus.Information = 0;
+        IoCompleteRequest(irp, IO_NO_INCREMENT);
 
+        return STATUS_UNSUCCESSFUL;
+    }
 
-    return STATUS_SUCCESS;
+    return Ark::Controller::FunctionDispatcher(deviceObject, irp);
 }
 
 #endif

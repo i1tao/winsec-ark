@@ -2,9 +2,9 @@
 #define DEVICE_HPP
 
 #include "logger.hpp"
-
 namespace Ark::Device
 {
+	constexpr int IoControlCode = CTL_CODE(FILE_DEVICE_UNKNOWN, 0x830, METHOD_BUFFERED, FILE_ANY_ACCESS);
 	UNICODE_STRING g_DeviceName = RTL_CONSTANT_STRING(L"\\Device\\WinsecARK");
 	UNICODE_STRING g_SymbolLinkName = RTL_CONSTANT_STRING(L"\\??\\WinsecARK");
 

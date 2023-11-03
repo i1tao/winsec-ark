@@ -10,6 +10,8 @@ namespace Ark
     {
         //²»Ïë½âñî£¬
         NTSTATUS FunctionDispatcher(PDEVICE_OBJECT deviceObject, PIRP irp);
+
+        Ark::DataType::PPackage MakeResponsePackage();
     }
 }
 

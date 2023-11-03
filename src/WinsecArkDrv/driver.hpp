@@ -48,8 +48,6 @@ NTSTATUS Ark::Driver::Init(PDRIVER_OBJECT driverObject, PUNICODE_STRING registry
         driverObject->MajorFunction[i] = DispatchDefault;
     }
 
-    driverObject->Flags |= DO_BUFFERED_IO;
-
     driverObject->MajorFunction[IRP_MJ_CREATE] = DispatchCreate;
     driverObject->MajorFunction[IRP_MJ_CLOSE] = DispatchClose;
     driverObject->MajorFunction[IRP_MJ_READ] = DispatchRead;
@@ -115,6 +113,8 @@ NTSTATUS Ark::Driver::DispatchShutdown(PDEVICE_OBJECT deviceObject, PIRP irp)
 
 NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT deviceObject, PIRP irp)
 {
+    NTSTATUS status = STATUS_SUCCESS;
+
     auto IrpStackLocation = IoGetCurrentIrpStackLocation(irp);
     if (IrpStackLocation->Parameters.DeviceIoControl.IoControlCode != IoControlCode)
     {
@@ -122,7 +122,7 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT deviceObject, PIRP irp)
         irp->IoStatus.Information = 0;
         IoCompleteRequest(irp, IO_NO_INCREMENT);
 
-        return STATUS_UNSUCCESSFUL;
+        return STATUS_INVALID_DEVICE_REQUEST;
     }
 
     return Ark::Controller::FunctionDispatcher(deviceObject, irp);

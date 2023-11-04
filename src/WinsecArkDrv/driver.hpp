@@ -114,18 +114,31 @@ NTSTATUS Ark::Driver::DispatchShutdown(PDEVICE_OBJECT deviceObject, PIRP irp)
 NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT deviceObject, PIRP irp)
 {
     NTSTATUS status = STATUS_SUCCESS;
+    auto IrpSL = IoGetCurrentIrpStackLocation(irp);
+    auto InBufSize = IrpSL->Parameters.DeviceIoControl.InputBufferLength;
+    auto OutBufSize = IrpSL->Parameters.DeviceIoControl.OutputBufferLength;
+    DWORD32 Result = 0;
 
-    auto IrpStackLocation = IoGetCurrentIrpStackLocation(irp);
-    if (IrpStackLocation->Parameters.DeviceIoControl.IoControlCode != IoControlCode)
+    //METHOD_NEITHER
+
+    switch (IrpSL->Parameters.DeviceIoControl.IoControlCode)
     {
-        irp->IoStatus.Status = -1;
-        irp->IoStatus.Information = 0;
-        IoCompleteRequest(irp, IO_NO_INCREMENT);
+    case NeitherIoControlCode:
+    {
+        PVOID OutBuffer = irp->UserBuffer;
+        PVOID InBuffer = IrpSL->Parameters.DeviceIoControl.Type3InputBuffer;
 
-        return STATUS_INVALID_DEVICE_REQUEST;
+        status = Controller::FunctionDispatcher(InBuffer, InBufSize, OutBuffer, OutBufSize, &Result);
+    }
+    default:
+        status = STATUS_INVALID_DEVICE_REQUEST;
+        break;
     }
 
-    return Ark::Controller::FunctionDispatcher(deviceObject, irp);
+    irp->IoStatus.Status = status;
+    irp->IoStatus.Information = Result;
+
+    return status;
 }
 
 #endif

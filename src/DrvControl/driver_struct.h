@@ -3,16 +3,29 @@
 
 #define _DRIVER_STRUCT_H
 
+
+#define IOCTL_BASE          0x800
 #define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
     ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method) \
 )
+
+#define MY_NEITHER_CTL_CODE(i)		\
+		CTL_CODE					\
+		(							\
+			FILE_DEVICE_UNKNOWN,	\
+			IOCTL_BASE + i + 0x100,	\
+			METHOD_NEITHER,			\
+			FILE_ANY_ACCESS			\
+		)
+
+
 
 namespace Ark
 {
     //FILE_DEVICE_UNKNOWN 0x22
     //METHOD_BUFFERED 0
     //FILE_ANY_ACCESS 0
-    constexpr int IoControlCode = CTL_CODE(0x22, 0x830, 0, 0);
+    constexpr int NeitherIoControlCode = MY_NEITHER_CTL_CODE(1);
     namespace DataType
     {
         enum ControlType

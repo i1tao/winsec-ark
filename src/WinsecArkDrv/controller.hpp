@@ -8,59 +8,49 @@ namespace Ark
 {
     namespace Controller
     {
-        //不想解耦，
-        NTSTATUS FunctionDispatcher(PDEVICE_OBJECT deviceObject, PIRP irp);
+		//data
+		using pfnFunction = NTSTATUS(*)(PVOID pInBuffer, ULONG uInSize, PVOID pOutBuffer, ULONG uOutSize, PDWORD32 Result);
+		pfnFunction g_FunctionArray[] =
+		{
+			nullptr,
 
-        Ark::DataType::PPackage MakeResponsePackage();
+		};
+        //不想解耦，
+        NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
     }
 }
 
-inline NTSTATUS Ark::Controller::FunctionDispatcher(PDEVICE_OBJECT deviceObject, PIRP irp)
+inline NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
 {
-    UNREFERENCED_PARAMETER(deviceObject);
     NTSTATUS status = STATUS_SUCCESS;
 
-    PVOID InputBuf = nullptr;
-    PVOID OutBuf = nullptr;
-    ULONG InputSize = 0;
-    ULONG OutputSize = 0;
+	__try
+	{
+		if (InSize < sizeof(ULONG))
+		{
+			return STATUS_INVALID_PARAMETER;
+		}
 
-    //获取输入缓冲区(如果存在)
-    if (irp->AssociatedIrp.SystemBuffer != nullptr)
-    {
-        InputBuf = irp->AssociatedIrp.SystemBuffer;
-    }
-    //获取输出缓冲区(如果存在)
-    if (irp->MdlAddress != nullptr)
-    {
-        //获取MDL缓冲区在内核中的映射
-        OutBuf = MmGetSystemAddressForMdlSafe(irp->MdlAddress, NormalPagePriority);
-    }
+		ProbeForRead(InBuffer, InSize, 1);
 
-    //获取当前IRP栈
-    PIO_STACK_LOCATION IoStack = IoGetCurrentIrpStackLocation(irp);
+		if (OutSize > 0)
+		{
+			ProbeForWrite(OutBuffer, OutSize, 1);
+		}
+	}
+	__except (1)
+	{
+		return STATUS_UNSUCCESSFUL;
+	}
 
-    //获取输入I/O缓存的大小
-    InputSize = IoStack->Parameters.DeviceIoControl.InputBufferLength;
-    //输出I/O缓存的大小
-    OutputSize = IoStack->Parameters.DeviceIoControl.OutputBufferLength;
+	auto type = static_cast<Ark::DataType::PPackage>(InBuffer)->OpType;
+	auto pFunc = g_FunctionArray(type);
+	if (!pFunc)
+	{
+		return status;
+	}
 
-    auto package = static_cast<Ark::DataType::PPackage>(InputBuf);
-    switch (package->OpType)
-    {
-    case Ark::DataType::ControlType::EnumProcess:
-    {
-
-    }
-    default:
-        break;
-    }
-
-
-    irp->IoStatus.Status = 0;
-    irp->IoStatus.Information = 0;
-    IoCompleteRequest(irp, IO_NO_INCREMENT);
-    return status;
+	status = pFunc(InBuffer, InSize, OutBuffer, OutSize, Result);
 
 }
 

@@ -44,7 +44,7 @@ inline NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize
 	}
 
 	auto type = static_cast<Ark::DataType::PPackage>(InBuffer)->OpType;
-	auto pFunc = g_FunctionArray(type);
+	auto pFunc = g_FunctionArray[type];
 	if (!pFunc)
 	{
 		return status;

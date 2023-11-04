@@ -113,6 +113,7 @@ NTSTATUS Ark::Driver::DispatchShutdown(PDEVICE_OBJECT deviceObject, PIRP irp)
 
 NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT deviceObject, PIRP irp)
 {
+    UNREFERENCED_PARAMETER(deviceObject);
     NTSTATUS status = STATUS_SUCCESS;
     auto IrpSL = IoGetCurrentIrpStackLocation(irp);
     auto InBufSize = IrpSL->Parameters.DeviceIoControl.InputBufferLength;

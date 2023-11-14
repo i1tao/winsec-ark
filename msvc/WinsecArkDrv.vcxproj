@@ -146,6 +146,7 @@
     <ClInclude Include="..\src\WinsecArkDrv\driver.hpp" />
     <ClInclude Include="..\src\WinsecArkDrv\logger.hpp" />
     <ClInclude Include="..\src\WinsecArkDrv\pch.h" />
+    <ClInclude Include="..\src\WinsecArkDrv\ps\process.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

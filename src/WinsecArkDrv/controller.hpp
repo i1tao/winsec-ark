@@ -4,16 +4,18 @@
 #include "pch.h"
 #include "../DrvControl/driver_struct.h"
 #include "logger.hpp"
+
+#include "ps/process.hpp"
 namespace Ark
 {
     namespace Controller
     {
 		//data
-		using pfnFunction = NTSTATUS(*)(PVOID pInBuffer, ULONG uInSize, PVOID pOutBuffer, ULONG uOutSize, PDWORD32 Result);
+		using pfnFunction = NTSTATUS(*)(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
 		pfnFunction g_FunctionArray[] =
 		{
 			nullptr,
-
+            Process::EnumProcess
 		};
         //²»Ïë½âñî£¬
         NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
@@ -52,6 +54,7 @@ inline NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize
 
 	status = pFunc(InBuffer, InSize, OutBuffer, OutSize, Result);
 
+	return status;
 }
 
 #endif

@@ -15,7 +15,9 @@ namespace Ark
 		pfnFunction g_FunctionArray[] =
 		{
 			nullptr,
-            Process::EnumProcess
+            Process::EnumProcess,
+			Process::SuspendProcess,
+			Process::KillProcess
 		};
         //²»Ïë½âñî£¬
         NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);

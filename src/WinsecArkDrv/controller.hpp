@@ -17,7 +17,7 @@ namespace Ark
 			nullptr,
             Process::EnumProcess,
 			Process::SuspendProcess,
-			Process::KillProcess
+			Process::KillProcess,
 		};
         //²»Ïë½âñî£¬
         NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);

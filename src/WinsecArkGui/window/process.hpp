@@ -65,6 +65,10 @@ namespace App
                         int n = 9;
                     }
                     ImGui::Separator();
+                    if (ImGui::MenuItem(u8"定位到资源管理器(Explorer)"))
+                    {
+                        int n = 9;
+                    }
                     if (ImGui::MenuItem(u8"属性(Properties)"))
                     {
                         int n = 9;

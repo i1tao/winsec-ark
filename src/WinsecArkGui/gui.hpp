@@ -27,8 +27,8 @@ namespace Gui
     static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
     static D3DPRESENT_PARAMETERS    g_d3dpp = {};
 
-    WNDCLASSEXW g_wc = {
-    sizeof(g_wc),
+    inline WNDCLASSEXW g_Wc = {
+    sizeof(g_Wc),
     CS_CLASSDC,
     WndProc,
     0L,
@@ -45,7 +45,7 @@ namespace Gui
     int g_ScreenWidth = ::GetSystemMetrics(SM_CXSCREEN);
     int g_ScreenHeight = ::GetSystemMetrics(SM_CYSCREEN);
 
-    HWND g_hwnd = nullptr;
+    HWND g_hWnd = nullptr;
 
     inline LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
@@ -123,32 +123,32 @@ namespace Gui
 
     inline void CreatehWindow()
     {
-        ::RegisterClassExW(&g_wc);
+        ::RegisterClassExW(&g_Wc);
 
-        g_hwnd = ::CreateWindowW(
-            g_wc.lpszClassName,
+        g_hWnd = ::CreateWindowW(
+            g_Wc.lpszClassName,
             L"Winsec Anti-Rookit",
             WS_OVERLAPPEDWINDOW,
             g_ScreenWidth * 0.15, g_ScreenHeight * 0.15, g_ScreenWidth * 0.7, g_ScreenHeight * 0.7,
             nullptr,
             nullptr,
-            g_wc.hInstance,
+            g_Wc.hInstance,
             nullptr);
 
         // Initialize Direct3D
-        if (!CreateDeviceD3D(g_hwnd))
+        if (!CreateDeviceD3D(g_hWnd))
         {
             CleanupDeviceD3D();
-            ::UnregisterClassW(g_wc.lpszClassName, g_wc.hInstance);
+            ::UnregisterClassW(g_Wc.lpszClassName, g_Wc.hInstance);
             return;
         }
 
         // Show the window
-        ::ShowWindow(g_hwnd, SW_SHOWDEFAULT);
-        ::UpdateWindow(g_hwnd);
+        ::ShowWindow(g_hWnd, SW_SHOWDEFAULT);
+        ::UpdateWindow(g_hWnd);
     }
 
-    inline void InitImgui()
+    inline void InitIMGui()
     {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
@@ -171,7 +171,7 @@ namespace Gui
             style.Colors[ImGuiCol_WindowBg].w = 1.0f;
         }
 
-        ImGui_ImplWin32_Init(g_hwnd);
+        ImGui_ImplWin32_Init(g_hWnd);
         ImGui_ImplDX9_Init(g_pd3dDevice);
 
 
@@ -186,7 +186,7 @@ namespace Gui
     inline void Run()
     {
         CreatehWindow();
-        InitImgui();
+        InitIMGui();
 
         ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
         // Main loop
@@ -222,7 +222,6 @@ namespace Gui
 
             //// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
             ImGui::ShowDemoWindow();
-            //App::DrawUI(g_d3dpp.BackBufferWidth, g_d3dpp.BackBufferHeight);
             App::DrawUI(g_d3dpp.BackBufferWidth, g_d3dpp.BackBufferHeight);
             // Rendering
 
@@ -260,8 +259,8 @@ namespace Gui
         ImGui::DestroyContext();
 
         CleanupDeviceD3D();
-        ::DestroyWindow(g_hwnd);
-        ::UnregisterClassW(g_wc.lpszClassName, g_wc.hInstance);
+        ::DestroyWindow(g_hWnd);
+        ::UnregisterClassW(g_Wc.lpszClassName, g_Wc.hInstance);
     }
 }
 

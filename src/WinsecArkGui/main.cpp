@@ -2,7 +2,6 @@
 
 #include "gui.hpp"
 
-
 int main(int, char**)
 {
     Gui::Run();

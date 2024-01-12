@@ -5,6 +5,8 @@
 
 namespace App
 {
+    static int g_Langueage = 0;
+
 
     void DrawUI(unsigned int weight,unsigned int height);
     void DrawMenuBar();

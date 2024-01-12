@@ -10,11 +10,12 @@ namespace App
         namespace About
         {
             static bool isShow = false;
-            void Draw()
+
+            inline void Draw()
             {
                 if (isShow)
                 {
-                    if (!ImGui::Begin(u8"关于", &isShow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking))
+                    if (!ImGui::Begin(g_Langueage ? u8"关于" : "About", &isShow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking))
                     {
                         ImGui::End();
                         return;

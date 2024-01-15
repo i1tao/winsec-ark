@@ -21,55 +21,69 @@ namespace App
                 u8"Description"
             };
 
+            inline std::vector<std::vector<std::string>> vecRightClickMenuText =
+            {
+                {std::vector<std::string>{u8"Refresh"           ,u8"刷新列表"} },
+                {std::vector<std::string>{u8"Kill Process"      ,u8"结束进程"} },
+                {std::vector<std::string>{u8"Force Kill Process",u8"强制结束进程"} },
+                {std::vector<std::string>{u8"Hide Process"      ,u8"隐藏进程"} },
+                {std::vector<std::string>{u8"Suspend Process"   ,u8"暂停进程"} },
+                {std::vector<std::string>{u8"Resume Process"    ,u8"恢复运行"} },
+                {std::vector<std::string>{u8"View Modules"      ,u8"查看模块"} },
+                {std::vector<std::string>{u8"View Threads"      ,u8"查看线程"} },
+                {std::vector<std::string>{u8"View Windows"      ,u8"查看窗口"} },
+                {std::vector<std::string>{u8"Explorer"          ,u8"定位到资源管理器"} },
+                {std::vector<std::string>{u8"Properties"        ,u8"属性"} },
+            };
             void RightClickMenu(int idx)
             {
                 select_row = idx;
                 if (ImGui::BeginPopupContextItem())
                 {
-                    if (ImGui::MenuItem(u8"刷新列表(Refresh)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[0][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }
                     ImGui::Separator();
-                    if (ImGui::MenuItem(u8"结束进程(Kill Process)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[1][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(u8"强制结束进程(Force Kill Process)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[2][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(u8"隐藏进程(Hide Process)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[3][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(u8"暂停进程(Suspend)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[4][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(u8"恢复运行(Resume)"))
-                    {
-                        int n = 9;
-                    }
-                    ImGui::Separator();
-                    if (ImGui::MenuItem(u8"查看模块(View Modules)"))
-                    {
-                        int n = 9;
-                    }
-                    if (ImGui::MenuItem(u8"查看线程(View Threads)"))
-                    {
-                        int n = 9;
-                    }
-                    if (ImGui::MenuItem(u8"查看窗口(View Windows)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[5][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }
                     ImGui::Separator();
-                    if (ImGui::MenuItem(u8"定位到资源管理器(Explorer)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[6][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(u8"属性(Properties)"))
+                    if (ImGui::MenuItem(vecRightClickMenuText[7][g_Langueage].c_str()))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(vecRightClickMenuText[8][g_Langueage].c_str()))
+                    {
+                        int n = 9;
+                    }
+                    ImGui::Separator();
+                    if (ImGui::MenuItem(vecRightClickMenuText[9][g_Langueage].c_str()))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(vecRightClickMenuText[10][g_Langueage].c_str()))
                     {
                         int n = 9;
                     }

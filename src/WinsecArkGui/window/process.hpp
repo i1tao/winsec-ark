@@ -94,7 +94,7 @@ namespace App
             {
                 if (isOpen)
                 {
-                    ImGui::Begin(u8"进程(Process)", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+                    ImGui::Begin(g_Langueage ? u8"进程" : u8"Process", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
                     static ImGuiTableFlags flags =
                         ImGuiTableFlags_RowBg
                         | ImGuiTableFlags_ContextMenuInBody

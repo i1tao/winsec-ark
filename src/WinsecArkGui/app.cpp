@@ -47,8 +47,16 @@ void App::DrawMenuBar()
                 {std::vector<std::string>{u8"Option",u8"选项"} },
                 {std::vector<std::string>{u8"About" ,u8"关于"} },
             };
-            if (ImGui::MenuItem(vecViewText[0][g_Langueage].c_str())) {}
-            if (ImGui::MenuItem(vecViewText[1][g_Langueage].c_str())) {}
+
+            if (ImGui::MenuItem(vecViewText[0][g_Langueage].c_str(), nullptr, App::Window::ProcessWindow::isOpen))
+            {
+                App::Window::ProcessWindow::isOpen = !App::Window::ProcessWindow::isOpen;
+            }
+            if (ImGui::MenuItem(vecViewText[1][g_Langueage].c_str(), nullptr, App::Window::KernelModuleWindow::isOpen))
+            {
+                App::Window::KernelModuleWindow::isOpen = !App::Window::KernelModuleWindow::isOpen;
+            }
+
             ImGui::Separator();
             ImGui::EndMenu();
         }

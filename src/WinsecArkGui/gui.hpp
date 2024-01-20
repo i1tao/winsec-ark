@@ -11,6 +11,7 @@
 
 #include "app.h"
 
+#include "service\service.hpp"
 #ifndef WM_DPICHANGED
 #define WM_DPICHANGED 0x02E0 // From Windows SDK 8.1+ headers
 #endif
@@ -185,6 +186,9 @@ namespace Gui
 
     inline void Run()
     {
+        auto drv = App::DrvService::GetInstance();
+        drv->InitService();
+
         CreatehWindow();
         InitIMGui();
 

@@ -187,7 +187,7 @@ namespace Gui
     inline void Run()
     {
         auto drv = App::DrvService::GetInstance();
-        drv->InitService();
+        //drv->InitService();
 
         CreatehWindow();
         InitIMGui();

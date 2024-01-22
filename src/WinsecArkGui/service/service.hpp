@@ -36,7 +36,13 @@ namespace App
     private:
 
     public:
-        bool InitService();
+        enum emLoadMode
+        {
+            Normal,
+            NtLoad,
+        };
+
+        bool InitService(int mode, const char* DriverName);
         bool Load();
         bool Unload();
     };
@@ -44,8 +50,16 @@ namespace App
     // init static member
     DrvService* DrvService::m_instance = nullptr;
 
-    bool DrvService::InitService()
+    bool DrvService::InitService(int mode, const char* DriverName)
     {
+        if (mode == Normal)
+        {
+            
+        }
+        else if (mode == NtLoad)
+        {
+            
+        }
         return true;
     }
     bool DrvService::Load()

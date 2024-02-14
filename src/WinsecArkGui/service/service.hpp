@@ -1,6 +1,8 @@
 #pragma once
 
-#include <Windows.h>
+#include <windows.h>
+
+#include "ntdll.h"
 namespace App
 {
     class DrvService
@@ -43,6 +45,13 @@ namespace App
         bool StartDriver();
         bool StopDriver();
         bool UnRegisterDriver();
+        bool NTRegisterDriver();
+        bool NTStartDriver();
+        bool NTStopDriver();
+        bool NTUnRegisterDriver();
+
+        typedef NTSTATUS(NTAPI* _NtLoadDriver)(IN PUNICODE_STRING DriverServiceName);
+        typedef NTSTATUS(NTAPI* _NtUnLoadDriver)(IN PUNICODE_STRING DriverServiceName);
     public:
         enum emLoadMode
         {
@@ -127,6 +136,51 @@ namespace App
         return true;
     }
 
+    inline bool DrvService::NTRegisterDriver()
+    {
+        std::string temp_str = "SYSTEM\\CurrentControlSet\\Services\\" + m_DriverName;
+        HKEY phkResult;
+        if (ERROR_SUCCESS == RegCreateKeyA(HKEY_LOCAL_MACHINE, temp_str.data(), &phkResult))
+        {
+            DWORD temp_value = 1;
+            RegSetValueExA(phkResult, "ErrorControl", 0, REG_DWORD, (LPBYTE)&temp_value, sizeof(DWORD));
+            RegSetValueExA(phkResult, "Type", 0, REG_DWORD, (LPBYTE)&temp_value, sizeof(DWORD));
+            temp_value = 3;
+            RegSetValueExA(phkResult, "Start", 0, REG_DWORD, (LPBYTE)&temp_value, sizeof(DWORD));
+            temp_str = "\\??\\" + m_DriverPath;
+            RegSetValueExA(phkResult, "ImagePath", 0, REG_EXPAND_SZ, (const unsigned char*)temp_str.data(), temp_str.length());
+            RegCloseKey(phkResult);
+
+            return true;
+        }
+        else
+        {
+            m_dwLastError = GetLastError();
+            return false;
+        }
+    }
+
+    inline bool DrvService::NTStartDriver()
+    {
+        HMODULE hNtdll = GetModuleHandleA("Ntdll.dll");
+        auto NtLoadDriver = GetProcAddress(hNtdll, "NtLoadDriver");
+        if (NtLoadDriver == nullptr)
+        {
+            m_dwLastError = GetLastError();
+            return false;
+        }
+
+        std::string temp_str = "\\Registry\\Machine\\System\\CurrentControlSet\\Services\\" + m_DriverName;
+    }
+
+    inline bool DrvService::NTStopDriver()
+    {
+    }
+
+    inline bool DrvService::NTUnRegisterDriver()
+    {
+    }
+
     bool DrvService::InitService(int mode, const char* DriverPath)
     {
         char drive[_MAX_DRIVE];
@@ -144,7 +198,7 @@ namespace App
     }
     bool DrvService::Load()
     {
-        if (m_LoadMode == Service )
+        if (m_LoadMode == Service)
         {
             if (!RegisterDriver() && !StartDriver())
             {
@@ -153,7 +207,10 @@ namespace App
         }
         else if (m_LoadMode == NtLoad)
         {
-
+            if (!NTRegisterDriver() && !NTStartDriver())
+            {
+                return false;
+            }
         }
         return true;
     }

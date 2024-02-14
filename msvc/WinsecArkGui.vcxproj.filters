@@ -96,5 +96,8 @@
     <ClInclude Include="..\src\WinsecArkGui\service\service.hpp">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\WinsecArkGui\ntdll.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

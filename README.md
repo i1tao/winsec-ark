@@ -41,7 +41,6 @@ winsec-ark is an open source anti-rookit tool for Windows. The winsec is my blog
   - 25389825
 
 # Thanks
-
-[Imgui](https://github.com/ocornut/imgui/) 	-> for UI
-[pediy](https://bbs.pediy.com) 	-> for developing
-[52pojie](https://www.52pojie.cn)     -> for developing
+[Imgui](https://github.com/ocornut/imgui/)
+[pediy](https://bbs.pediy.com)
+[52pojie](https://www.52pojie.cn)

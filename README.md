@@ -44,3 +44,7 @@ winsec-ark is an open source anti-rookit tool for Windows. The winsec is my blog
 [Imgui](https://github.com/ocornut/imgui/)
 [pediy](https://bbs.pediy.com)
 [52pojie](https://www.52pojie.cn)
+
+Thanks to [JetBrains](https://www.jetbrains.com/?from=meesong) for providing free licenses such as [Resharper C++](https://www.jetbrains.com/resharper-cpp/?from=meesong) for my open-source projects.
+
+[<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/ReSharperCPP_icon.png" alt="ReSharper C++ logo." width=200>](https://www.jetbrains.com/?from=winsec-ark)

@@ -16,9 +16,6 @@
     <ClCompile Include="..\src\WinsecArkDrv\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\WinsecArkDrv\pch.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\WinsecArkDrv\pch.h">

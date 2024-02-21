@@ -1,37 +1,47 @@
-#ifndef CONTROL_HPP
-#define CONTROL_HPP
-
+#pragma once
 #include "pch.h"
+
 #include "../DrvControl/driver_struct.h"
-#include "logger.hpp"
 
 #include "ps/process.hpp"
+
 namespace Ark
 {
     namespace Controller
     {
 		//data
 		using pfnFunction = NTSTATUS(*)(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
-		pfnFunction g_FunctionArray[] =
+        inline pfnFunction g_FunctionArray[] =
 		{
 			nullptr,
             Process::EnumProcess,
 			Process::SuspendProcess,
 			Process::KillProcess,
 		};
-        //²»Ïë½âñî£¬
+
+
         NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
     }
 }
 
-inline NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
+/**
+ * \brief Dispatch call functions.
+ * \param InBuffer 
+ * \param InSize 
+ * \param OutBuffer 
+ * \param OutSize 
+ * \param Result 
+ * \return 
+ */
+NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
 {
-    NTSTATUS status = STATUS_SUCCESS;
+    NTSTATUS Ntstatus = STATUS_SUCCESS;
 
 	__try
 	{
 		if (InSize < sizeof(ULONG))
 		{
+			Ark::Logger::LogError("InSize < sizeofULONG");
 			return STATUS_INVALID_PARAMETER;
 		}
 
@@ -44,23 +54,19 @@ inline NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize
 	}
 	__except (1)
 	{
+		Ark::Logger::LogError("%s %s except",__FUNCTION__,__LINE__);
 		return STATUS_UNSUCCESSFUL;
 	}
 
-	auto type = static_cast<Ark::DataType::PPackage>(InBuffer)->OpType;
+	auto type = static_cast<Ark::DataType::PPACKGE>(InBuffer)->OpType;
 	auto pFunc = g_FunctionArray[type];
 	if (!pFunc)
 	{
-		return status;
+		return Ntstatus;
 	}
 
-	status = pFunc(InBuffer, InSize, OutBuffer, OutSize, Result);
+	Ntstatus = pFunc(InBuffer, InSize, OutBuffer, OutSize, Result);
 
-	return status;
+	return Ntstatus;
 }
-
-#endif
-
-
-
 

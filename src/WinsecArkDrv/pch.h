@@ -1,7 +1,5 @@
-#ifndef PCH_H
-#define PCH_H
+#pragma once
 
 #include <ntifs.h>
 
-
-#endif
+#include "logger.hpp"

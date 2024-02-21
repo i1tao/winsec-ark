@@ -1,8 +1,4 @@
-
-#ifndef _DRIVER_STRUCT_H
-
-#define _DRIVER_STRUCT_H
-
+#pragma once
 
 #define IOCTL_BASE          0x800
 #define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
@@ -22,13 +18,11 @@
 
 namespace Ark
 {
-    //FILE_DEVICE_UNKNOWN 0x22
-    //METHOD_BUFFERED 0
-    //FILE_ANY_ACCESS 0
     constexpr int NeitherIoControlCode = MY_NEITHER_CTL_CODE(1);
     namespace DataType
     {
-        enum ControlType
+        /// \brief Control type
+        enum CType          
         {
             EnumProcess,
             killProcess
@@ -36,22 +30,18 @@ namespace Ark
 
         typedef struct _PACKAGE
         {
-            int Code;
-            ControlType OpType;
-            char* Buffer[1];
-        }Package,*PPackage;
+            INT    Code;
+            CType  OpType;
+            PCHAR  Buffer[1];
+        }PACKGE,*PPACKGE;
 
-        typedef struct 
+        typedef struct _PROCESS_INFO
         {
-            unsigned long long PID;
-            WCHAR Name[260];
-            WCHAR Path[260];
+            ULONG64 PID;
             ULONG64 EProcess;
             DWORD32 Flag;
-        }ProcessInfo,PProcessInfo;
+            WCHAR Name[260];
+            WCHAR Path[260];
+        }PROCESS_INFO,PPROCESS_INFO;
     }
 }
-
-
-
-#endif

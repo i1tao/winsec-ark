@@ -146,7 +146,6 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 	Irp->IoStatus.Status = status;
 	Irp->IoStatus.Information = Result;
 
-	IoCompleteRequest(Irp, IO_NO_INCREMENT);
 	return status;
 }
 

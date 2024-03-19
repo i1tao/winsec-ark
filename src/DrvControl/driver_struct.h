@@ -42,6 +42,6 @@ namespace Ark
             DWORD32 Flag;
             WCHAR Name[260];
             WCHAR Path[260];
-        }PROCESS_INFO,PPROCESS_INFO;
+        }PROCESS_INFO,*PPROCESS_INFO;
     }
 }

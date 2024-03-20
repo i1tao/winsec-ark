@@ -1,4 +1,5 @@
 #pragma once
+#include <ntstrsafe.h>
 #if TRUE
 
 typedef struct _SYSTEM_PROCESS_INFORMATION
@@ -43,6 +44,15 @@ extern "C" NTSTATUS NTAPI ZwQuerySystemInformation(
     PVOID systemInformation,
     ULONG systemInformationLength,
     PULONG returnLength);
+
+
+extern "C" NTKERNELAPI NTSTATUS NTAPI ZwQueryInformationProcess(
+    __in HANDLE ProcessHandle,
+    __in PROCESSINFOCLASS ProcessInformationClass,
+    __out_bcount(ProcessInformationLength) PVOID ProcessInformation,
+    __in ULONG ProcessInformationLength,
+    __out_opt PULONG ReturnLength
+);
 #endif
 
 namespace Ark::Controller::Process
@@ -72,8 +82,8 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
     HANDLE            Handle   = nullptr;
     CLIENT_ID         Clientid;
     OBJECT_ATTRIBUTES ObjectAttributes;
-    UNICODE_STRING    Path;
-    UNICODE_STRING    Name;
+    UNICODE_STRING    Path{};
+    UNICODE_STRING    Name{};
 
     PSYSTEM_PROCESS_INFORMATION             SystemProcessInfo = nullptr;
     std::map<HANDLE,DataType::PROCESS_INFO> ProcessList;
@@ -118,12 +128,9 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
         ProcessInfo.EProcess = (unsigned long long)Process;
         ProcessInfo.Flag     = 0;
 
-        ObfDereferenceObject(Process);
+        ProcessList.emplace((HANDLE)SystemProcessInfo->UniqueProcessId, ProcessInfo);
 
-        //先不处理路径，后面统一处理。
-        ProcessList.insert(
-            std::pair<HANDLE, DataType::PROCESS_INFO>(SystemProcessInfo->UniqueProcessId,ProcessInfo)
-        );
+        ObfDereferenceObject(Process);
 
         SystemProcessInfo = (PSYSTEM_PROCESS_INFORMATION)((PUCHAR)SystemProcessInfo + SystemProcessInfo->NextEntryOffset);
     }
@@ -138,27 +145,38 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
         }
 
         InitializeObjectAttributes(&ObjectAttributes, 0, OBJ_CASE_INSENSITIVE | OBJ_KERNEL_HANDLE, 0, 0);
-        Clientid.UniqueProcess = (HANDLE)i;
+        Clientid.UniqueProcess  = (HANDLE)i;
         Clientid.UniqueThread   = 0;
         if (NT_SUCCESS(ZwOpenProcess(&Handle, PROCESS_ALL_ACCESS, &ObjectAttributes, &Clientid)))
         {
-            if (GetProcessPathAndName(Handle, &Path,&Name))
-            {
-            }
+            GetProcessPathAndName(Handle, &Path, &Name);
         }
 
-        if (ProcessList.find((HANDLE)i) == ProcessList.end())
+        auto it = ProcessList.find((HANDLE)i);
+        if (it == ProcessList.end())
         {
             //操，居然遍历到了一个不存在的进程
-            ProcessList.insert(
-                std::pair<HANDLE, DataType::PROCESS_INFO>((HANDLE)i, DataType::PROCESS_INFO{})
-            );
+            DataType::PROCESS_INFO ProcessInfo = {};
+            RtlZeroMemory(&ProcessInfo, sizeof(DataType::PROCESS_INFO));
+            ProcessInfo.PID = i;
+            ProcessInfo.EProcess = (unsigned long long)Process;
+            ProcessInfo.Flag = 0;
+            RtlCopyMemory(ProcessInfo.Path, Path.Buffer, Path.Length);
+            RtlCopyMemory(ProcessInfo.Name, Name.Buffer, Name.Length);
+
+            ProcessList.emplace((HANDLE)i, ProcessInfo);
+        }
+        else
+        {
+            RtlCopyMemory(it->second.Path, Path.Buffer, Path.Length);
+            RtlCopyMemory(it->second.Name, Name.Buffer, Name.Length);
         }
 
         ObDereferenceObject(Process);
     }
 
-    return NTSTATUS();
+
+    return Ntstatus;
 }
 
 
@@ -180,4 +198,91 @@ NTSTATUS Ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVO
     UNREFERENCED_PARAMETER(OutSize);
     UNREFERENCED_PARAMETER(Result);
     return NTSTATUS();
+}
+
+NTSTATUS Ark::Controller::Process::GetProcessPathAndName(HANDLE ProcessHandle, PUNICODE_STRING Path, PUNICODE_STRING Name)
+{
+    NTSTATUS Ntstatus = STATUS_SUCCESS;
+    ULONG    InfoLen = 0;
+
+    PFILE_OBJECT    FileObj = nullptr;
+    PDEVICE_OBJECT  DeviceObj = nullptr;
+    POBJECT_NAME_INFORMATION ObjNameInformation = nullptr;
+    PUNICODE_STRING TmpPath = nullptr;
+
+    __try {
+        Ntstatus = ZwQueryInformationProcess(
+            ProcessHandle,
+            ProcessImageFileName,
+            nullptr, 0,
+            &InfoLen);
+
+        if (Ntstatus != STATUS_INFO_LENGTH_MISMATCH)
+        {
+            __leave;
+        }
+
+        TmpPath = reinterpret_cast<PUNICODE_STRING>(ExAllocatePoolWithTag(NonPagedPool, InfoLen, 'xxxx'));
+        if (TmpPath == nullptr)
+        {
+            Ntstatus = STATUS_MEMORY_NOT_ALLOCATED;
+            __leave;
+        }
+        RtlZeroMemory(TmpPath, InfoLen);
+
+        Ntstatus = ZwQueryInformationProcess(
+            ProcessHandle,
+            ProcessImageFileName,
+            TmpPath, InfoLen,
+            &InfoLen);
+
+        if (!NT_SUCCESS(Ntstatus))
+        {
+            __leave;
+        }
+        Ntstatus = IoGetDeviceObjectPointer(TmpPath, SYNCHRONIZE, &FileObj, &DeviceObj);
+
+        if (!NT_SUCCESS(Ntstatus))
+        {
+            __leave;
+        }
+
+        Ntstatus = IoQueryFileDosDeviceName(FileObj, &ObjNameInformation);
+        if (!NT_SUCCESS(Ntstatus))
+        {
+            __leave;
+        }
+        Path->Length = ObjNameInformation->Name.Length;
+        Path->MaximumLength = ObjNameInformation->Name.MaximumLength;
+        Path->Buffer = reinterpret_cast<PWCH>(ExAllocatePoolWithTag(NonPagedPool, Path->MaximumLength, 'xxxx'));
+        if (Path->Buffer == nullptr)
+        {
+            Ntstatus = STATUS_MEMORY_NOT_ALLOCATED;
+            __leave;
+        }
+        RtlCopyMemory(Path->Buffer, ObjNameInformation->Name.Buffer, Path->MaximumLength);
+
+        PWCH LastSlash = wcsrchr(Path->Buffer, L'\\');
+        if (LastSlash != nullptr)
+        {
+            RtlUnicodeStringInit(Name, LastSlash + 1);
+        }
+        else
+        {
+            RtlUnicodeStringCopyString(Name, Path->Buffer);
+        }
+    }
+    __finally {
+        if (FileObj != nullptr) {
+            ObDereferenceObject(FileObj);
+        }
+        if (ObjNameInformation != nullptr) {
+            ExFreePool(ObjNameInformation);
+        }
+        if (TmpPath != nullptr) {
+            ExFreePoolWithTag(TmpPath, 'xxxx');
+        }
+    }
+
+    return Ntstatus;
 }

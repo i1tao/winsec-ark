@@ -33,10 +33,10 @@
     <ClInclude Include="..\src\WinsecArkDrv\controller.hpp">
       <Filter>src\modules</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\WinsecArkDrv\logger.hpp">
-      <Filter>src\third-party</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\WinsecArkDrv\ps\process.hpp">
+      <Filter>src\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkDrv\logger.hpp">
       <Filter>src\modules</Filter>
     </ClInclude>
   </ItemGroup>

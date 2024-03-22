@@ -32,6 +32,7 @@ namespace Ark
         {
             INT    Code;
             CType  OpType;
+            INT    DataSize;
             PCHAR  Buffer[1];
         }PACKGE,*PPACKGE;
 
@@ -43,5 +44,7 @@ namespace Ark
             WCHAR Name[260];
             WCHAR Path[260];
         }PROCESS_INFO,*PPROCESS_INFO;
+
+
     }
 }

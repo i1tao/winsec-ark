@@ -52,7 +52,11 @@ extern "C" NTKERNELAPI NTSTATUS NTAPI ZwQueryInformationProcess(
     __out_bcount(ProcessInformationLength) PVOID ProcessInformation,
     __in ULONG ProcessInformationLength,
     __out_opt PULONG ReturnLength
+
 );
+extern "C" NTSTATUS
+NTAPI
+PsTerminateProcess(IN PEPROCESS Process, IN NTSTATUS ExitStatus);
 #endif
 
 namespace Ark::Controller::Process
@@ -197,7 +201,26 @@ NTSTATUS Ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVO
     UNREFERENCED_PARAMETER(OutBuffer);
     UNREFERENCED_PARAMETER(OutSize);
     UNREFERENCED_PARAMETER(Result);
-    return NTSTATUS();
+
+    //反正只是demo，就不写这么高深的东西了
+    NTSTATUS Ntstatus = STATUS_SUCCESS;
+    HANDLE ProcessHandle = NULL;
+    OBJECT_ATTRIBUTES obj;
+    CLIENT_ID cid = { 0 };
+
+    InitializeObjectAttributes(&obj, NULL, OBJ_KERNEL_HANDLE | OBJ_CASE_INSENSITIVE, NULL, NULL);
+    cid.UniqueProcess = reinterpret_cast<HANDLE>(reinterpret_cast<DataType::PACKGE*>(InBuffer)->Buffer);
+    cid.UniqueThread = 0;
+
+    Ntstatus = ZwOpenProcess(&ProcessHandle, GENERIC_ALL, &obj, &cid);
+    if (NT_SUCCESS(Ntstatus))
+    {
+        ZwTerminateProcess(ProcessHandle, 0);
+        ZwClose(ProcessHandle);
+    }
+    ZwClose(ProcessHandle);
+
+    return Ntstatus;
 }
 
 NTSTATUS Ark::Controller::Process::GetProcessPathAndName(HANDLE ProcessHandle, PUNICODE_STRING Path, PUNICODE_STRING Name)

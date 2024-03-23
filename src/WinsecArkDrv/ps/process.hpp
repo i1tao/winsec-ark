@@ -57,6 +57,9 @@ extern "C" NTKERNELAPI NTSTATUS NTAPI ZwQueryInformationProcess(
 extern "C" NTSTATUS
 NTAPI
 PsTerminateProcess(IN PEPROCESS Process, IN NTSTATUS ExitStatus);
+
+extern "C" NTKERNELAPI NTSTATUS PsSuspendProcess(PEPROCESS proc);
+extern "C" NTKERNELAPI NTSTATUS PsResumeProcess(PEPROCESS proc);
 #endif
 
 namespace Ark::Controller::Process
@@ -191,7 +194,12 @@ NTSTATUS Ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, 
     UNREFERENCED_PARAMETER(OutBuffer);
     UNREFERENCED_PARAMETER(OutSize);
     UNREFERENCED_PARAMETER(Result);
-    return NTSTATUS();
+
+    NTSTATUS Ntstatus = STATUS_SUCCESS;
+    auto PEprocess = reinterpret_cast<PEPROCESS>(reinterpret_cast<DataType::PACKGE*>(InBuffer)->Buffer);
+    Ntstatus = PsSuspendProcess(PEprocess);
+
+    return Ntstatus;
 }
 
 NTSTATUS Ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)

@@ -1,6 +1,6 @@
 # Winsec Anti-Rookit Tool
 ------------------------------------------------------------
-    Status:Under development, perhaps completed before 6/17/2024.
+    Status:Under development, perhaps completed before 8/31/2024.
 # Statement
 
 This is just a free open-source software. If you use this software and cause direct or indirect losses or damages to you, I will not be responsible From the moment you use this software, it will be deemed that you have accepted this disclaimer.
@@ -26,21 +26,12 @@ winsec-ark is an open source anti-rookit tool for Windows. The winsec is my blog
 2. Build.
 ```
 
-
-
-# Contributing/Donate
-
-- Issues and Push Request is welcome.
-- If you like that you can click to donate our develop.
-
 # Contact
 
-- Email
-  - Lumosmagicb00m@gmail.com
-- QQ 
-  - 25389825
+- Email:Lumosmagicb00m@gmail.com
 
 # Thanks
+[JetBrains](https://www.jetbrains.com/)
 [Imgui](https://github.com/ocornut/imgui/)
 [pediy](https://bbs.pediy.com)
 [52pojie](https://www.52pojie.cn)

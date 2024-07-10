@@ -69,11 +69,12 @@ NTSTATUS Ark::Driver::Init(PDRIVER_OBJECT DriverObject, PUNICODE_STRING Registry
 NTSTATUS Ark::Driver::DispatchDefault(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
 	UNREFERENCED_PARAMETER(DeviceObject);
+	Ark::Logger::LogDebug("DispatchDefault");
+
 
 	Irp->IoStatus.Status = 0;
 	Irp->IoStatus.Information = 0;
 	IoCompleteRequest(Irp, IO_NO_INCREMENT);
-	KdPrint(("DispatchDefault\n"));
 	return STATUS_SUCCESS;
 }
 
@@ -81,6 +82,12 @@ NTSTATUS Ark::Driver::DispatchCreate(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
 	UNREFERENCED_PARAMETER(DeviceObject);
 	UNREFERENCED_PARAMETER(Irp);
+
+	Ark::Logger::LogDebug("DispatchCreate");
+
+	Irp->IoStatus.Status = 0;
+	Irp->IoStatus.Information = 0;
+	IoCompleteRequest(Irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
@@ -88,6 +95,11 @@ NTSTATUS Ark::Driver::DispatchClose(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
 	UNREFERENCED_PARAMETER(DeviceObject);
 	UNREFERENCED_PARAMETER(Irp);
+
+	Ark::Logger::LogDebug("DispatchClose");
+	Irp->IoStatus.Status = 0;
+	Irp->IoStatus.Information = 0;
+	IoCompleteRequest(Irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
@@ -95,6 +107,11 @@ NTSTATUS Ark::Driver::DispatchRead(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
 	UNREFERENCED_PARAMETER(DeviceObject);
 	UNREFERENCED_PARAMETER(Irp);
+
+	Ark::Logger::LogDebug("DispatchRead");
+	Irp->IoStatus.Status = 0;
+	Irp->IoStatus.Information = 0;
+	IoCompleteRequest(Irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
@@ -102,6 +119,11 @@ NTSTATUS Ark::Driver::DispatchWrite(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
 	UNREFERENCED_PARAMETER(DeviceObject);
 	UNREFERENCED_PARAMETER(Irp);
+
+	Ark::Logger::LogDebug("DispatchWrite");
+	Irp->IoStatus.Status = 0;
+	Irp->IoStatus.Information = 0;
+	IoCompleteRequest(Irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 

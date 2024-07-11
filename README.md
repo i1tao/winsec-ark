@@ -1,4 +1,4 @@
-# Winsec Anti-Rookit Tool
+# Winsec Anti-Rookit Tool (Unfinished)
 ------------------------------------------------------------
     Status:Under development, perhaps completed before 8/31/2024.
 # Statement

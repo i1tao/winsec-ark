@@ -145,7 +145,7 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 	auto InBufSize = IrpSL->Parameters.DeviceIoControl.InputBufferLength;
 	auto OutBufSize = IrpSL->Parameters.DeviceIoControl.OutputBufferLength;
 
-	DWORD32 Result = 0;
+	DWORD32 IoStatusInformation = 0;
 	PVOID OutBuffer = NULL;
 	PVOID InBuffer = NULL;
 	//METHOD_NEITHER
@@ -157,7 +157,7 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 		OutBuffer = Irp->UserBuffer;
 		InBuffer = IrpSL->Parameters.DeviceIoControl.Type3InputBuffer;
 
-		status = Controller::FunctionDispatcher(InBuffer, InBufSize, OutBuffer, OutBufSize, &Result);
+		status = Controller::FunctionDispatcher(InBuffer, InBufSize, OutBuffer, OutBufSize, &IoStatusInformation);
 		break;
 	}
 	default:
@@ -166,7 +166,7 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 	}
 
 	Irp->IoStatus.Status = status;
-	Irp->IoStatus.Information = Result;
+	Irp->IoStatus.Information = IoStatusInformation;
 
 	IoCompleteRequest(Irp, IO_NO_INCREMENT);
 	return status;

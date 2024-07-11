@@ -20,7 +20,7 @@ namespace Ark
 		};
 
 
-        NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
+        NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation);
     }
 }
 
@@ -30,10 +30,10 @@ namespace Ark
  * \param InSize 
  * \param OutBuffer 
  * \param OutSize 
- * \param Result 
+ * \param IoStatusInformation 
  * \return 
  */
-NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
+NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     NTSTATUS Ntstatus = STATUS_SUCCESS;
 
@@ -65,7 +65,7 @@ NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID
 		return Ntstatus;
 	}
 
-	Ntstatus = pFunc(InBuffer, InSize, OutBuffer, OutSize, Result);
+	Ntstatus = pFunc(InBuffer, InSize, OutBuffer, OutSize, IoStatusInformation);
 
 	return Ntstatus;
 }

@@ -75,13 +75,13 @@ namespace Ark::Controller::Process
 }
 
 
-NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
+NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
     UNREFERENCED_PARAMETER(OutBuffer);
     UNREFERENCED_PARAMETER(OutSize);
-    UNREFERENCED_PARAMETER(Result);
+    UNREFERENCED_PARAMETER(IoStatusInformation);
 
     NTSTATUS          Ntstatus = STATUS_SUCCESS;
     PEPROCESS         Process  = nullptr;
@@ -182,6 +182,14 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
         ObDereferenceObject(Process);
     }
 
+    int i = 0;
+    for (auto x : ProcessList)
+    {
+        RtlCopyMemory((PVOID64)((uint64_t)InBuffer + i * sizeof(DataType::PROCESS_INFO)), &x, sizeof(DataType::PROCESS_INFO));
+        i++;
+    }
+
+    *IoStatusInformation = (DWORD32)(ProcessList.size() * sizeof(DataType::PROCESS_INFO));
 
     return Ntstatus;
 }

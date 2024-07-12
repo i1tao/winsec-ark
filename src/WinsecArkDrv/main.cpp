@@ -4,7 +4,7 @@
 
 extern "C"
 NTSTATUS
-DriverEntry(
+DriverMain(
     _In_ PDRIVER_OBJECT DriverObject,
     _In_ PUNICODE_STRING RegistryPath
 )

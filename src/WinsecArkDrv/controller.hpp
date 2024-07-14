@@ -10,7 +10,7 @@ namespace Ark
     namespace Controller
     {
 		//data
-		using pfnFunction = NTSTATUS(*)(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
+		using pfnFunction = NTSTATUS(*)(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation);
         inline pfnFunction g_FunctionArray[] =
 		{
 			nullptr,

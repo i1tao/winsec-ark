@@ -154,8 +154,8 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 	{
 	case NeitherIoControlCode:
 	{
-		OutBuffer = Irp->UserBuffer;
-		InBuffer = IrpSL->Parameters.DeviceIoControl.Type3InputBuffer;
+		OutBuffer = Irp->AssociatedIrp.SystemBuffer;
+		InBuffer = Irp->AssociatedIrp.SystemBuffer;
 
 		status = Controller::FunctionDispatcher(InBuffer, InBufSize, OutBuffer, OutBufSize, &IoStatusInformation);
 		break;

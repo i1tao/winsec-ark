@@ -54,7 +54,8 @@ NTSTATUS Ark::Device::InitDevice(PDRIVER_OBJECT DriverObject)
 			Ark::Logger::LogDebug("Failed to register shutdown notification  (0x%08X)\n", Ntstatus);
 			break;
 		}
-		
+
+		g_DeviceObject->Flags |= DO_BUFFERED_IO;
     }
     while (false);
 

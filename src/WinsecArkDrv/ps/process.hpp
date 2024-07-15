@@ -1,65 +1,66 @@
 #pragma once
+#include <Veil.h>
 #include <ntstrsafe.h>
 #if TRUE
 
-typedef struct _SYSTEM_PROCESS_INFORMATION
-{
-    ULONG NextEntryOffset;
-    ULONG NumberOfThreads;
-    LARGE_INTEGER SpareLi1;
-    LARGE_INTEGER SpareLi2;
-    LARGE_INTEGER SpareLi3;
-    LARGE_INTEGER CreateTime;
-    LARGE_INTEGER UserTime;
-    LARGE_INTEGER KernelTime;
-    UNICODE_STRING ImageName;
-    KPRIORITY BasePriority;
-    HANDLE UniqueProcessId;
-    HANDLE InheritedFromUniqueProcessId;
-    ULONG HandleCount;
-    ULONG SessionId;
-    ULONG_PTR PageDirectoryBase;
-    SIZE_T PeakVirtualSize;
-    SIZE_T VirtualSize;
-    ULONG PageFaultCount;
-    SIZE_T PeakWorkingSetSize;
-    SIZE_T WorkingSetSize;
-    SIZE_T QuotaPeakPagedPoolUsage;
-    SIZE_T QuotaPagedPoolUsage;
-    SIZE_T QuotaPeakNonPagedPoolUsage;
-    SIZE_T QuotaNonPagedPoolUsage;
-    SIZE_T PagefileUsage;
-    SIZE_T PeakPagefileUsage;
-    SIZE_T PrivatePageCount;
-    LARGE_INTEGER ReadOperationCount;
-    LARGE_INTEGER WriteOperationCount;
-    LARGE_INTEGER OtherOperationCount;
-    LARGE_INTEGER ReadTransferCount;
-    LARGE_INTEGER WriteTransferCount;
-    LARGE_INTEGER OtherTransferCount;
-} SYSTEM_PROCESS_INFORMATION, * PSYSTEM_PROCESS_INFORMATION;
-
-extern "C" NTSTATUS NTAPI ZwQuerySystemInformation(
-    DWORD32 systemInformationClass,
-    PVOID systemInformation,
-    ULONG systemInformationLength,
-    PULONG returnLength);
-
-
-extern "C" NTKERNELAPI NTSTATUS NTAPI ZwQueryInformationProcess(
-    __in HANDLE ProcessHandle,
-    __in PROCESSINFOCLASS ProcessInformationClass,
-    __out_bcount(ProcessInformationLength) PVOID ProcessInformation,
-    __in ULONG ProcessInformationLength,
-    __out_opt PULONG ReturnLength
-
-);
-extern "C" NTSTATUS
-NTAPI
-PsTerminateProcess(IN PEPROCESS Process, IN NTSTATUS ExitStatus);
-
-extern "C" NTKERNELAPI NTSTATUS PsSuspendProcess(PEPROCESS proc);
-extern "C" NTKERNELAPI NTSTATUS PsResumeProcess(PEPROCESS proc);
+//typedef struct _SYSTEM_PROCESS_INFORMATION
+//{
+//    ULONG NextEntryOffset;
+//    ULONG NumberOfThreads;
+//    LARGE_INTEGER SpareLi1;
+//    LARGE_INTEGER SpareLi2;
+//    LARGE_INTEGER SpareLi3;
+//    LARGE_INTEGER CreateTime;
+//    LARGE_INTEGER UserTime;
+//    LARGE_INTEGER KernelTime;
+//    UNICODE_STRING ImageName;
+//    KPRIORITY BasePriority;
+//    HANDLE UniqueProcessId;
+//    HANDLE InheritedFromUniqueProcessId;
+//    ULONG HandleCount;
+//    ULONG SessionId;
+//    ULONG_PTR PageDirectoryBase;
+//    SIZE_T PeakVirtualSize;
+//    SIZE_T VirtualSize;
+//    ULONG PageFaultCount;
+//    SIZE_T PeakWorkingSetSize;
+//    SIZE_T WorkingSetSize;
+//    SIZE_T QuotaPeakPagedPoolUsage;
+//    SIZE_T QuotaPagedPoolUsage;
+//    SIZE_T QuotaPeakNonPagedPoolUsage;
+//    SIZE_T QuotaNonPagedPoolUsage;
+//    SIZE_T PagefileUsage;
+//    SIZE_T PeakPagefileUsage;
+//    SIZE_T PrivatePageCount;
+//    LARGE_INTEGER ReadOperationCount;
+//    LARGE_INTEGER WriteOperationCount;
+//    LARGE_INTEGER OtherOperationCount;
+//    LARGE_INTEGER ReadTransferCount;
+//    LARGE_INTEGER WriteTransferCount;
+//    LARGE_INTEGER OtherTransferCount;
+//} SYSTEM_PROCESS_INFORMATION, * PSYSTEM_PROCESS_INFORMATION;
+//
+//extern "C" NTSTATUS NTAPI ZwQuerySystemInformation(
+//    DWORD32 systemInformationClass,
+//    PVOID systemInformation,
+//    ULONG systemInformationLength,
+//    PULONG returnLength);
+//
+//
+//extern "C" NTKERNELAPI NTSTATUS NTAPI ZwQueryInformationProcess(
+//    __in HANDLE ProcessHandle,
+//    __in PROCESSINFOCLASS ProcessInformationClass,
+//    __out_bcount(ProcessInformationLength) PVOID ProcessInformation,
+//    __in ULONG ProcessInformationLength,
+//    __out_opt PULONG ReturnLength
+//
+//);
+//extern "C" NTSTATUS
+//NTAPI
+//PsTerminateProcess(IN PEPROCESS Process, IN NTSTATUS ExitStatus);
+//
+//extern "C" NTKERNELAPI NTSTATUS PsSuspendProcess(PEPROCESS proc);
+//extern "C" NTKERNELAPI NTSTATUS PsResumeProcess(PEPROCESS proc);
 #endif
 
 namespace Ark::Controller::Process
@@ -97,7 +98,7 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
 
 
     Ntstatus = ZwQuerySystemInformation(
-        0x5,  //SystemProcessInformation 0x5
+        SystemProcessInformation,  //SystemProcessInformation 0x5
         0,
         NULL, &InfoLen);
     if (Ntstatus != STATUS_INFO_LENGTH_MISMATCH)
@@ -111,7 +112,7 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
     }
 
     Ntstatus = ZwQuerySystemInformation(
-        0x5, //SystemProcessInformation 0x5
+        SystemProcessInformation, //SystemProcessInformation 0x5
         SystemProcessInfo,
         InfoLen, &InfoLen);
 

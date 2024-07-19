@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable :4996)
 #include <Veil.h>
 #include <ntstrsafe.h>
 
@@ -44,7 +45,7 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
     {
         return Ntstatus;
     }
-    SystemProcessInfo = static_cast<PSYSTEM_PROCESS_INFORMATION>(ExAllocatePoolWithTag(NonPagedPool, InfoLen, 'xxxx'));
+    SystemProcessInfo = static_cast<PSYSTEM_PROCESS_INFORMATION>(ExAllocatePool(NonPagedPool, InfoLen));
     if (SystemProcessInfo == nullptr)
     {
         return STATUS_MEMORY_NOT_ALLOCATED;
@@ -135,18 +136,19 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
 }
 
 
-NTSTATUS Ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
+NTSTATUS Ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
     UNREFERENCED_PARAMETER(OutBuffer);
     UNREFERENCED_PARAMETER(OutSize);
-    UNREFERENCED_PARAMETER(Result);
+    UNREFERENCED_PARAMETER(IoStatusInformation);
 
     NTSTATUS Ntstatus = STATUS_SUCCESS;
     auto PEprocess = reinterpret_cast<PEPROCESS>(reinterpret_cast<DataType::PACKGE*>(InBuffer)->Buffer);
     Ntstatus = PsSuspendProcess(PEprocess);
 
+    *IoStatusInformation = 0;
     return Ntstatus;
 }
 

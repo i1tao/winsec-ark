@@ -37,27 +37,6 @@ NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID
 {
     NTSTATUS Ntstatus = STATUS_SUCCESS;
 
-	__try
-	{
-		if (InSize < sizeof(ULONG))
-		{
-			Ark::Logger::LogError("InSize < sizeofULONG");
-			return STATUS_INVALID_PARAMETER;
-		}
-
-		ProbeForRead(InBuffer, InSize, 1);
-
-		if (OutSize > 0)
-		{
-			ProbeForWrite(OutBuffer, OutSize, 1);
-		}
-	}
-	__except (1)
-	{
-		Ark::Logger::LogError("%s %s except",__FUNCTION__,__LINE__);
-		return STATUS_UNSUCCESSFUL;
-	}
-
 	auto type = static_cast<Ark::DataType::PPACKGE>(InBuffer)->OpType;
 	auto pFunc = g_FunctionArray[type];
 	if (!pFunc)

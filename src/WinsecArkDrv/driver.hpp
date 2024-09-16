@@ -1,4 +1,4 @@
-#ifndef DRIVER_HPP
+ï»¿#ifndef DRIVER_HPP
 #define DRIVER_HPP
 
 #include "pch.h"
@@ -131,7 +131,7 @@ NTSTATUS Ark::Driver::DispatchShutdown(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
 	UNREFERENCED_PARAMETER(DeviceObject);
 	UNREFERENCED_PARAMETER(Irp);
-	//Ð¶ÔØÇý¶¯
+
 	Ark::Driver::Unload(DeviceObject->DriverObject);
 	return STATUS_SUCCESS;
 }

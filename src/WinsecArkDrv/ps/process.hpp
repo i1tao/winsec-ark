@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #pragma warning(disable :4996)
 #include <Veil.h>
 #include <ntstrsafe.h>
@@ -103,7 +103,7 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
         auto it = ProcessList.find((HANDLE)i);
         if (it == ProcessList.end())
         {
-            //²Ù£¬¾ÓÈ»±éÀúµ½ÁËÒ»¸ö²»´æÔÚµÄ½ø³Ì
+
             DataType::PROCESS_INFO ProcessInfo = {};
             RtlZeroMemory(&ProcessInfo, sizeof(DataType::PROCESS_INFO));
             ProcessInfo.PID = i;
@@ -160,7 +160,7 @@ NTSTATUS Ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVO
     UNREFERENCED_PARAMETER(OutSize);
     UNREFERENCED_PARAMETER(Result);
 
-    //·´ÕıÖ»ÊÇdemo£¬¾Í²»Ğ´ÕâÃ´¸ßÉîµÄ¶«Î÷ÁË
+    //Â·Â´Ã•Ã½Ã–Â»ÃŠÃ‡demoÂ£Â¬Â¾ÃÂ²Â»ÃÂ´Ã•Ã¢ÃƒÂ´Â¸ÃŸÃ‰Ã®ÂµÃ„Â¶Â«ÃÃ·ÃÃ‹
     NTSTATUS Ntstatus = STATUS_SUCCESS;
     HANDLE ProcessHandle = NULL;
     OBJECT_ATTRIBUTES obj;

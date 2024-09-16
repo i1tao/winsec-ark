@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #define IOCTL_BASE          0x800
 #define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
@@ -21,7 +21,7 @@ namespace Ark
     constexpr int NeitherIoControlCode = MY_NEITHER_CTL_CODE(1);
     namespace DataType
     {
-        /// \brief Control type
+
         enum CType          
         {
             EnumProcess,

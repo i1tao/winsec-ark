@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 #include "imgui.h"
 
@@ -14,7 +14,7 @@ namespace App
             {
                 if (isOpen)
                 {
-                    ImGui::Begin(u8"ƒ⁄∫Àƒ£øÈ(Kernel module)", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+                    ImGui::Begin(u8"ÂÜÖÊ†∏Ê®°Âùó(Kernel module)", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
                     auto flags = ImGuiTableFlags_ScrollX
                         | ImGuiTableFlags_ScrollY
                         | ImGuiTableFlags_RowBg

@@ -1,4 +1,4 @@
-#pragma once
+Ôªø#pragma once
 
 #include <string>
 
@@ -27,9 +27,9 @@ namespace App
                     ImGui::Begin(u8"Commands", &isOpen, ImGuiWindowFlags_AlwaysAutoResize);
                     ImGui::InputTextMultiline("##source", const_cast<char*>(text.c_str()),text.size(), ImVec2(-FLT_MIN, -FLT_MIN - 30), ImGuiInputTextFlags_ReadOnly);
                     ImGui::PushItemWidth(-120);
-                    ImGui::InputTextWithHint("->", g_Langueage ? u8"«Î ‰»Î√¸¡Ó": u8"Please input your command", commands, 256);
+                    ImGui::InputTextWithHint("->", g_Langueage ? u8"ËØ∑ËæìÂÖ•ÂëΩ‰ª§Ë°å": u8"Please input your command", commands, 256);
                     ImGui::SameLine();
-                    ImGui::Button(u8"÷¥––(Run)");
+                    ImGui::Button(u8"√ñ¬¥√ê√ê(Run)");
                     ImGui::SameLine();
 
                     ImGui::End();

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include "command.hpp"
 #include "imgui.h"
@@ -23,17 +23,17 @@ namespace App
 
             inline std::vector<std::vector<std::string>> vecRightClickMenuText =
             {
-                {std::vector<std::string>{u8"Refresh"           ,u8"Ë¢ĞÂÁĞ±í"} },
-                {std::vector<std::string>{u8"Kill Process"      ,u8"½áÊø½ø³Ì"} },
-                {std::vector<std::string>{u8"Force Kill Process",u8"Ç¿ÖÆ½áÊø½ø³Ì"} },
-                {std::vector<std::string>{u8"Hide Process"      ,u8"Òş²Ø½ø³Ì"} },
-                {std::vector<std::string>{u8"Suspend Process"   ,u8"ÔİÍ£½ø³Ì"} },
-                {std::vector<std::string>{u8"Resume Process"    ,u8"»Ö¸´ÔËĞĞ"} },
-                {std::vector<std::string>{u8"View Modules"      ,u8"²é¿´Ä£¿é"} },
-                {std::vector<std::string>{u8"View Threads"      ,u8"²é¿´Ïß³Ì"} },
-                {std::vector<std::string>{u8"View Windows"      ,u8"²é¿´´°¿Ú"} },
-                {std::vector<std::string>{u8"Explorer"          ,u8"¶¨Î»µ½×ÊÔ´¹ÜÀíÆ÷"} },
-                {std::vector<std::string>{u8"Properties"        ,u8"ÊôĞÔ"} },
+                {std::vector<std::string>{u8"Refresh"           ,u8"åˆ·æ–°åˆ—è¡¨"} },
+                {std::vector<std::string>{u8"Kill Process"      ,u8"ç»“æŸè¿›ç¨‹"} },
+                {std::vector<std::string>{u8"Force Kill Process",u8"å¼ºåˆ¶ç»“æŸè¿›ç¨‹"} },
+                {std::vector<std::string>{u8"Hide Process"      ,u8"éšè—è¿›ç¨‹"} },
+                {std::vector<std::string>{u8"Suspend Process"   ,u8"æš‚åœè¿›ç¨‹"} },
+                {std::vector<std::string>{u8"Resume Process"    ,u8"æ¢å¤è¿è¡Œ"} },
+                {std::vector<std::string>{u8"View Modules"      ,u8"æŸ¥çœ‹æ¨¡å—"} },
+                {std::vector<std::string>{u8"View Threads"      ,u8"æŸ¥çœ‹çº¿ç¨‹"} },
+                {std::vector<std::string>{u8"View Windows"      ,u8"æŸ¥çœ‹çª—å£"} },
+                {std::vector<std::string>{u8"Explorer"          ,u8"å®šä½åˆ°èµ„æºç®¡ç†å™¨"} },
+                {std::vector<std::string>{u8"Properties"        ,u8"å±æ€§"} },
             };
             void RightClickMenu(int idx)
             {
@@ -94,7 +94,7 @@ namespace App
             {
                 if (isOpen)
                 {
-                    ImGui::Begin(g_Langueage ? u8"½ø³Ì" : u8"Process", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+                    ImGui::Begin(g_Langueage ? u8"Â½Ã¸Â³ÃŒ" : u8"Process", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
                     static ImGuiTableFlags flags =
                         ImGuiTableFlags_RowBg
                         | ImGuiTableFlags_ContextMenuInBody

@@ -7,157 +7,160 @@
 #include "controller.hpp"
 
 
-namespace Ark::Driver
+namespace ark::driver
 {
-	VOID     Unload(PDRIVER_OBJECT DriverObject);
-	NTSTATUS Init(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath);
+	VOID     unload(PDRIVER_OBJECT driver_object);
+	NTSTATUS init(PDRIVER_OBJECT driver_object, PUNICODE_STRING registry_path);
 
-	NTSTATUS DispatchDefault(PDEVICE_OBJECT DeviceObject, PIRP Irp);
-	NTSTATUS DispatchCreate(PDEVICE_OBJECT DeviceObject, PIRP Irp);
-	NTSTATUS DispatchClose(PDEVICE_OBJECT DeviceObject, PIRP Irp);
-	NTSTATUS DispatchRead(PDEVICE_OBJECT DeviceObject, PIRP Irp);
-	NTSTATUS DispatchWrite(PDEVICE_OBJECT DeviceObject, PIRP Irp);
-	NTSTATUS DispatchShutdown(PDEVICE_OBJECT DeviceObject, PIRP Irp);
-	NTSTATUS DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp);
+	NTSTATUS dispatch_default(PDEVICE_OBJECT device_object, PIRP irp);
+	NTSTATUS dispatch_create(PDEVICE_OBJECT device_object, PIRP irp);
+	NTSTATUS dispatch_close(PDEVICE_OBJECT device_object, PIRP irp);
+	NTSTATUS dispatch_read(PDEVICE_OBJECT device_object, PIRP irp);
+	NTSTATUS dispatch_write(PDEVICE_OBJECT device_object, PIRP irp);
+	NTSTATUS dispatch_shutdown(PDEVICE_OBJECT device_object, PIRP irp);
+	NTSTATUS dispatch_control(PDEVICE_OBJECT device_object, PIRP irp);
 
 }
 
-VOID Ark::Driver::Unload(PDRIVER_OBJECT DriverObject)
+inline VOID ark::driver::unload(PDRIVER_OBJECT driver_object)
 {
-	UNREFERENCED_PARAMETER(DriverObject);
+	UNREFERENCED_PARAMETER(driver_object);
 
-	Ark::Device::UnInitDevice();
+	ark::device::un_init_device();
 
 	return;
 }
 
-NTSTATUS Ark::Driver::Init(PDRIVER_OBJECT DriverObject, PUNICODE_STRING RegistryPath)
+inline NTSTATUS ark::driver::init(PDRIVER_OBJECT driver_object, PUNICODE_STRING registry_path)
 {
-	UNREFERENCED_PARAMETER(RegistryPath);
+	UNREFERENCED_PARAMETER(registry_path);
 	NTSTATUS status = STATUS_SUCCESS;
 
-	DriverObject->DriverUnload = Unload;
+	driver_object->DriverUnload = unload;
 
 	//does not support map driver
-	if (DriverObject == nullptr)
+	if (driver_object == nullptr)
 	{
 		return STATUS_UNSUCCESSFUL;
 	}
 
 	for (int i = 0; i < IRP_MJ_MAXIMUM_FUNCTION; i++)
 	{
-		DriverObject->MajorFunction[i] = DispatchDefault;
+		driver_object->MajorFunction[i] = dispatch_default;
 	}
 
-	DriverObject->MajorFunction[IRP_MJ_CREATE] = DispatchCreate;
-	DriverObject->MajorFunction[IRP_MJ_CLOSE] = DispatchClose;
-	DriverObject->MajorFunction[IRP_MJ_READ] = DispatchRead;
-	DriverObject->MajorFunction[IRP_MJ_WRITE] = DispatchWrite;
-	DriverObject->MajorFunction[IRP_MJ_SHUTDOWN] = DispatchShutdown;
-	DriverObject->MajorFunction[IRP_MJ_DEVICE_CONTROL] = DispatchControl;
+	driver_object->MajorFunction[IRP_MJ_CREATE] = dispatch_create;
+	driver_object->MajorFunction[IRP_MJ_CLOSE] = dispatch_close;
+	driver_object->MajorFunction[IRP_MJ_READ] = dispatch_read;
+	driver_object->MajorFunction[IRP_MJ_WRITE] = dispatch_write;
+	driver_object->MajorFunction[IRP_MJ_SHUTDOWN] = dispatch_shutdown;
+	driver_object->MajorFunction[IRP_MJ_DEVICE_CONTROL] = dispatch_control;
 
 
-	status = Ark::Device::InitDevice(DriverObject);
+	status = ark::device::init_device(driver_object);
 	if (!NT_SUCCESS(status))
 	{
-		Ark::Logger::LogDebug("InitDevice error (0x%08X)\n", status);
+		ark::logger::log_debug("InitDevice error (0x%08X)\n", status);
 	}
 
 	return status;
 }
 
-NTSTATUS Ark::Driver::DispatchDefault(PDEVICE_OBJECT DeviceObject, PIRP Irp)
+inline NTSTATUS ark::driver::dispatch_default(PDEVICE_OBJECT device_object, PIRP irp)
 {
-	UNREFERENCED_PARAMETER(DeviceObject);
-	Ark::Logger::LogDebug("DispatchDefault");
+	UNREFERENCED_PARAMETER(device_object);
+	ark::logger::log_debug("DispatchDefault");
 
 
-	Irp->IoStatus.Status = 0;
-	Irp->IoStatus.Information = 0;
-	IoCompleteRequest(Irp, IO_NO_INCREMENT);
+	irp->IoStatus.Status = 0;
+	irp->IoStatus.Information = 0;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
-NTSTATUS Ark::Driver::DispatchCreate(PDEVICE_OBJECT DeviceObject, PIRP Irp)
+inline NTSTATUS ark::driver::dispatch_create(PDEVICE_OBJECT device_object, PIRP irp)
 {
-	UNREFERENCED_PARAMETER(DeviceObject);
-	UNREFERENCED_PARAMETER(Irp);
+	UNREFERENCED_PARAMETER(device_object);
+	UNREFERENCED_PARAMETER(irp);
 
-	Ark::Logger::LogDebug("DispatchCreate");
+	ark::logger::log_debug("DispatchCreate");
 
-	Irp->IoStatus.Status = 0;
-	Irp->IoStatus.Information = 0;
-	IoCompleteRequest(Irp, IO_NO_INCREMENT);
+	irp->IoStatus.Status = 0;
+	irp->IoStatus.Information = 0;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
-NTSTATUS Ark::Driver::DispatchClose(PDEVICE_OBJECT DeviceObject, PIRP Irp)
+inline NTSTATUS ark::driver::dispatch_close(PDEVICE_OBJECT device_object, PIRP irp)
 {
-	UNREFERENCED_PARAMETER(DeviceObject);
-	UNREFERENCED_PARAMETER(Irp);
+	UNREFERENCED_PARAMETER(device_object);
+	UNREFERENCED_PARAMETER(irp);
 
-	Ark::Logger::LogDebug("DispatchClose");
-	Irp->IoStatus.Status = 0;
-	Irp->IoStatus.Information = 0;
-	IoCompleteRequest(Irp, IO_NO_INCREMENT);
+	ark::logger::log_debug("DispatchClose");
+	irp->IoStatus.Status = 0;
+	irp->IoStatus.Information = 0;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
-NTSTATUS Ark::Driver::DispatchRead(PDEVICE_OBJECT DeviceObject, PIRP Irp)
+inline NTSTATUS ark::driver::dispatch_read(PDEVICE_OBJECT device_object, PIRP irp)
 {
-	UNREFERENCED_PARAMETER(DeviceObject);
-	UNREFERENCED_PARAMETER(Irp);
+	UNREFERENCED_PARAMETER(device_object);
+	UNREFERENCED_PARAMETER(irp);
 
-	Ark::Logger::LogDebug("DispatchRead");
-	Irp->IoStatus.Status = 0;
-	Irp->IoStatus.Information = 0;
-	IoCompleteRequest(Irp, IO_NO_INCREMENT);
+	ark::logger::log_debug("DispatchRead");
+	irp->IoStatus.Status = 0;
+	irp->IoStatus.Information = 0;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
-NTSTATUS Ark::Driver::DispatchWrite(PDEVICE_OBJECT DeviceObject, PIRP Irp)
+inline NTSTATUS ark::driver::dispatch_write(PDEVICE_OBJECT device_object, PIRP irp)
 {
-	UNREFERENCED_PARAMETER(DeviceObject);
-	UNREFERENCED_PARAMETER(Irp);
+	UNREFERENCED_PARAMETER(device_object);
+	UNREFERENCED_PARAMETER(irp);
 
-	Ark::Logger::LogDebug("DispatchWrite");
-	Irp->IoStatus.Status = 0;
-	Irp->IoStatus.Information = 0;
-	IoCompleteRequest(Irp, IO_NO_INCREMENT);
+	ark::logger::log_debug("DispatchWrite");
+	irp->IoStatus.Status = 0;
+	irp->IoStatus.Information = 0;
+	IoCompleteRequest(irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
-NTSTATUS Ark::Driver::DispatchShutdown(PDEVICE_OBJECT DeviceObject, PIRP Irp)
+inline NTSTATUS ark::driver::dispatch_shutdown(PDEVICE_OBJECT device_object, PIRP irp)
 {
-	UNREFERENCED_PARAMETER(DeviceObject);
-	UNREFERENCED_PARAMETER(Irp);
+	UNREFERENCED_PARAMETER(device_object);
+	UNREFERENCED_PARAMETER(irp);
 
-	Ark::Driver::Unload(DeviceObject->DriverObject);
+    ark::driver::unload(device_object->DriverObject);
+    irp->IoStatus.Status = 0;
+    irp->IoStatus.Information = 0;
+    IoCompleteRequest(irp, IO_NO_INCREMENT);
 	return STATUS_SUCCESS;
 }
 
-NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
+inline NTSTATUS ark::driver::dispatch_control(PDEVICE_OBJECT device_object, PIRP irp)
 {
-	UNREFERENCED_PARAMETER(DeviceObject);
+	UNREFERENCED_PARAMETER(device_object);
 	NTSTATUS status = STATUS_SUCCESS;
 
-	auto IrpSL = IoGetCurrentIrpStackLocation(Irp);
-	auto InBufSize = IrpSL->Parameters.DeviceIoControl.InputBufferLength;
-	auto OutBufSize = IrpSL->Parameters.DeviceIoControl.OutputBufferLength;
+	auto io_stack_location = IoGetCurrentIrpStackLocation(irp);
+	auto in_buf_size = io_stack_location->Parameters.DeviceIoControl.InputBufferLength;
+	auto out_buf_size = io_stack_location->Parameters.DeviceIoControl.OutputBufferLength;
 
 	DWORD32 IoStatusInformation = 0;
 	PVOID OutBuffer = NULL;
 	PVOID InBuffer = NULL;
 	//METHOD_NEITHER
 
-	switch (IrpSL->Parameters.DeviceIoControl.IoControlCode)
+	switch (io_stack_location->Parameters.DeviceIoControl.IoControlCode)
 	{
 	case NeitherIoControlCode:
 	{
-		OutBuffer = Irp->AssociatedIrp.SystemBuffer;
-		InBuffer = Irp->AssociatedIrp.SystemBuffer;
+		OutBuffer = irp->AssociatedIrp.SystemBuffer;
+		InBuffer = irp->AssociatedIrp.SystemBuffer;
 
-		status = Controller::FunctionDispatcher(InBuffer, InBufSize, OutBuffer, OutBufSize, &IoStatusInformation);
+		status = Controller::FunctionDispatcher(InBuffer, in_buf_size, OutBuffer, out_buf_size, &IoStatusInformation);
 		break;
 	}
 	default:
@@ -165,10 +168,10 @@ NTSTATUS Ark::Driver::DispatchControl(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 		break;
 	}
 
-	Irp->IoStatus.Status = status;
-	Irp->IoStatus.Information = IoStatusInformation;
+	irp->IoStatus.Status = status;
+	irp->IoStatus.Information = IoStatusInformation;
 
-	IoCompleteRequest(Irp, IO_NO_INCREMENT);
+	IoCompleteRequest(irp, IO_NO_INCREMENT);
 	return status;
 }
 

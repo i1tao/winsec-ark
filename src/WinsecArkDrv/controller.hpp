@@ -1,11 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "pch.h"
 
 #include "../DrvControl/driver_struct.h"
 
 #include "ps/process.hpp"
 
-namespace Ark
+namespace ark
 {
     namespace Controller
     {
@@ -33,11 +33,11 @@ namespace Ark
  * \param IoStatusInformation 
  * \return 
  */
-NTSTATUS Ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
+NTSTATUS ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     NTSTATUS Ntstatus = STATUS_SUCCESS;
 
-	auto type = static_cast<Ark::DataType::PPACKGE>(InBuffer)->OpType;
+	auto type = static_cast<ark::DataType::PPACKGE>(InBuffer)->OpType;
 	auto pFunc = g_FunctionArray[type];
 	if (!pFunc)
 	{

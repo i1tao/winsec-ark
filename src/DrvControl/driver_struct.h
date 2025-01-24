@@ -16,7 +16,7 @@
 
 
 
-namespace Ark
+namespace ark
 {
     constexpr int NeitherIoControlCode = MY_NEITHER_CTL_CODE(1);
     namespace DataType

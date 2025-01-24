@@ -1,55 +1,60 @@
-#pragma once
+﻿#pragma once
 
 #include <stdarg.h>
 
-namespace Ark::Logger
+namespace ark::logger
 {
-    enum class LogLevel {
-        Error = 0,
-        Warning,
-        Information,
-        Debug,
-        Verbose
+    enum class log_level {
+        error = 0,
+        warning,
+        information,
+        debug,
+        verbose
     };
 
 #ifndef DRIVER_PREFIX
 #define DRIVER_PREFIX "[Winsec]: "
 #endif // !DRIVER_PREFIX
 
-    ULONG Log(LogLevel level, PCSTR format, ...);
-    ULONG LogError(PCSTR format, ...);
-    ULONG LogInfo(PCSTR format, ...);
-    ULONG LogDebug(PCSTR format, ...);
-    ULONG LogVerbose(PCSTR format, ...);
+    ULONG log(log_level level, PCSTR format, ...);
+    ULONG log_error(PCSTR format, ...);
+    ULONG log_info(PCSTR format, ...);
+    ULONG log_debug(PCSTR format, ...);
+    ULONG log_verbose(PCSTR format, ...);
 
 
-    ULONG Log(LogLevel level, PCSTR format, ...) {
+    inline ULONG log(log_level level, PCSTR format, ...)
+    {
         va_list list;
         va_start(list, format);
         return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(level), format, list);
     }
 
-    ULONG LogError(PCSTR format, ...) {
+    inline ULONG log_error(PCSTR format, ...)
+    {
         va_list list;
         va_start(list, format);
-        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(LogLevel::Error), format, list);
+        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(log_level::error), format, list);
     }
 
-    ULONG LogInfo(PCSTR format, ...) {
+    inline ULONG log_info(PCSTR format, ...)
+    {
         va_list list;
         va_start(list, format);
-        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(LogLevel::Information), format, list);
+        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(log_level::information), format, list);
     }
 
-    ULONG LogDebug(PCSTR format, ...) {
+    inline ULONG log_debug(PCSTR format, ...)
+    {
         va_list list;
         va_start(list, format);
-        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(LogLevel::Debug), format, list);
+        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(log_level::debug), format, list);
     }
 
-    ULONG LogVerbose(PCSTR format, ...) {
+    inline ULONG log_verbose(PCSTR format, ...)
+    {
         va_list list;
         va_start(list, format);
-        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(LogLevel::Verbose), format, list);
+        return vDbgPrintExWithPrefix(DRIVER_PREFIX, DPFLTR_IHVDRIVER_ID, static_cast<ULONG>(log_level::verbose), format, list);
     }
 }

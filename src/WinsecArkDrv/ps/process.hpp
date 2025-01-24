@@ -3,7 +3,7 @@
 #include <Veil.h>
 #include <ntstrsafe.h>
 
-namespace Ark::Controller::Process
+namespace ark::Controller::Process
 {
     ///Interface definition
     NTSTATUS EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
@@ -16,7 +16,7 @@ namespace Ark::Controller::Process
 }
 
 
-NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
+NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
@@ -136,7 +136,7 @@ NTSTATUS Ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
 }
 
 
-NTSTATUS Ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
+NTSTATUS ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
@@ -152,7 +152,7 @@ NTSTATUS Ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, 
     return Ntstatus;
 }
 
-NTSTATUS Ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
+NTSTATUS ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
@@ -181,7 +181,7 @@ NTSTATUS Ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVO
     return Ntstatus;
 }
 
-NTSTATUS Ark::Controller::Process::GetProcessPathAndName(HANDLE ProcessHandle, PUNICODE_STRING Path, PUNICODE_STRING Name)
+NTSTATUS ark::Controller::Process::GetProcessPathAndName(HANDLE ProcessHandle, PUNICODE_STRING Path, PUNICODE_STRING Name)
 {
     NTSTATUS Ntstatus = STATUS_SUCCESS;
     ULONG    InfoLen = 0;

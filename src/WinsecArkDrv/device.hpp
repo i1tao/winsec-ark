@@ -1,103 +1,103 @@
-#pragma once
+﻿#pragma once
 
 #include "logger.hpp"
-namespace Ark::Device
+namespace ark::device
 {
-	constexpr int IoControlCode = CTL_CODE(FILE_DEVICE_UNKNOWN, 0x830, METHOD_BUFFERED, FILE_ANY_ACCESS);
+	constexpr int io_control_code = CTL_CODE(FILE_DEVICE_UNKNOWN, 0x830, METHOD_BUFFERED, FILE_ANY_ACCESS);
 
-	UNICODE_STRING g_DeviceName = RTL_CONSTANT_STRING(L"\\Device\\WinsecARK");
-	UNICODE_STRING g_SymbolLinkName = RTL_CONSTANT_STRING(L"\\??\\WinsecARK");
+    inline UNICODE_STRING g_device_name = RTL_CONSTANT_STRING(L"\\Device\\WinsecARK");
+    inline UNICODE_STRING g_symbol_link_name = RTL_CONSTANT_STRING(L"\\??\\WinsecARK");
 
-    PDEVICE_OBJECT g_DeviceObject = nullptr;
-	BOOLEAN		   g_IsSymbolLinkCreated = false;
+    inline PDEVICE_OBJECT g_device_object = nullptr;
+    inline BOOLEAN		  g_is_symbol_link_created = false;
 
-	NTSTATUS InitDevice(PDRIVER_OBJECT DriverObject);
-	NTSTATUS UnInitDevice();
+	NTSTATUS init_device(PDRIVER_OBJECT driver_object);
+	NTSTATUS un_init_device();
 
-	NTSTATUS RegisterShutdownNotification(PDEVICE_OBJECT DeviceObject);
+	NTSTATUS register_shutdown_notification(PDEVICE_OBJECT device_object);
 
 	
 }
 
 
-NTSTATUS Ark::Device::InitDevice(PDRIVER_OBJECT DriverObject)
+inline NTSTATUS ark::device::init_device(PDRIVER_OBJECT driver_object)
 {
-	NTSTATUS Ntstatus = STATUS_SUCCESS;
+	NTSTATUS status = STATUS_SUCCESS;
     do
     {
-		Ntstatus = IoCreateDevice(
-			DriverObject,
+		status = IoCreateDevice(
+			driver_object,
 			0,
-			&g_DeviceName,
+			&g_device_name,
 			FILE_DEVICE_UNKNOWN,
 			0,
 			FALSE,
-			&g_DeviceObject);
-		if (!NT_SUCCESS(Ntstatus))
+			&g_device_object);
+		if (!NT_SUCCESS(status))
 		{
-			Ark::Logger::LogDebug("Failed to create device object (0x%08X)\n", Ntstatus);
+			ark::logger::log_debug("Failed to create device object (0x%08X)\n", status);
 			break;
 		}
 
 
-		Ntstatus = IoCreateSymbolicLink(&g_SymbolLinkName, &g_DeviceName);
-		if (!NT_SUCCESS(Ntstatus))
+		status = IoCreateSymbolicLink(&g_symbol_link_name, &g_device_name);
+		if (!NT_SUCCESS(status))
 		{
-			Ark::Logger::LogDebug("Failed to create symbol link (0x%08X)\n", Ntstatus);
+			ark::logger::log_debug("Failed to create symbol link (0x%08X)\n", status);
 			break;
 		}
 
-		g_IsSymbolLinkCreated = true;
-		Ntstatus = RegisterShutdownNotification(g_DeviceObject);
-		if (!NT_SUCCESS(Ntstatus))
+		g_is_symbol_link_created = true;
+		status = register_shutdown_notification(g_device_object);
+		if (!NT_SUCCESS(status))
 		{
-			Ark::Logger::LogDebug("Failed to register shutdown notification  (0x%08X)\n", Ntstatus);
+			ark::logger::log_debug("Failed to register shutdown notification  (0x%08X)\n", status);
 			break;
 		}
 
-		g_DeviceObject->Flags |= DO_BUFFERED_IO;
+		g_device_object->Flags |= DO_BUFFERED_IO;
     }
     while (false);
 
-	if (!NT_SUCCESS(Ntstatus))
+	if (!NT_SUCCESS(status))
 	{
         // if err,directly delete device
 
-        if (g_DeviceObject)
+        if (g_device_object)
         {
-			IoDeleteDevice(g_DeviceObject);
+			IoDeleteDevice(g_device_object);
         }
 		
 
-        if (g_IsSymbolLinkCreated)
+        if (g_is_symbol_link_created)
         {
-			Ntstatus = IoDeleteSymbolicLink(&g_SymbolLinkName);
+			status = IoDeleteSymbolicLink(&g_symbol_link_name);
         }
-	}
-
-	return Ntstatus;
-}
-
-NTSTATUS Ark::Device::UnInitDevice()
-{
-	NTSTATUS status = STATUS_SUCCESS;
-
-	if (g_IsSymbolLinkCreated)
-	{
-		status = IoDeleteSymbolicLink(&g_SymbolLinkName);
-	}
-
-	if (g_DeviceObject)
-	{
-		IoDeleteDevice(g_DeviceObject);
 	}
 
 	return status;
 }
 
-NTSTATUS Ark::Device::RegisterShutdownNotification(PDEVICE_OBJECT DeviceObject)
+NTSTATUS ark::device::un_init_device()
 {
-	NTSTATUS Ntstatus = STATUS_SUCCESS;
-	Ntstatus = IoRegisterShutdownNotification(DeviceObject);
-	return Ntstatus;
+	NTSTATUS status = STATUS_SUCCESS;
+
+	if (g_is_symbol_link_created)
+	{
+		status = IoDeleteSymbolicLink(&g_symbol_link_name);
+	}
+
+	if (g_device_object)
+	{
+		IoDeleteDevice(g_device_object);
+	}
+
+	return status;
+}
+
+NTSTATUS ark::device::register_shutdown_notification(PDEVICE_OBJECT device_object)
+{
+	NTSTATUS status = STATUS_SUCCESS;
+	status = IoRegisterShutdownNotification(device_object);
+	return status;
 }

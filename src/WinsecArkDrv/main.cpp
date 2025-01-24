@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "driver.hpp"
 
 
@@ -9,5 +9,5 @@ DriverMain(
     _In_ PUNICODE_STRING RegistryPath
 )
 {
-    return Ark::Driver::Init(DriverObject, RegistryPath);
+    return ark::driver::init(DriverObject, RegistryPath);
 }

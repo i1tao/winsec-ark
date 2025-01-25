@@ -4,7 +4,7 @@
 #include "imgui.h"
 
 
-namespace App
+namespace app
 {
     namespace Window
     {
@@ -40,50 +40,50 @@ namespace App
                 select_row = idx;
                 if (ImGui::BeginPopupContextItem())
                 {
-                    if (ImGui::MenuItem(vecRightClickMenuText[0][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[0][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
                     ImGui::Separator();
-                    if (ImGui::MenuItem(vecRightClickMenuText[1][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[1][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(vecRightClickMenuText[2][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[2][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(vecRightClickMenuText[3][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[3][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(vecRightClickMenuText[4][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[4][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(vecRightClickMenuText[5][g_Langueage].c_str()))
-                    {
-                        int n = 9;
-                    }
-                    ImGui::Separator();
-                    if (ImGui::MenuItem(vecRightClickMenuText[6][g_Langueage].c_str()))
-                    {
-                        int n = 9;
-                    }
-                    if (ImGui::MenuItem(vecRightClickMenuText[7][g_Langueage].c_str()))
-                    {
-                        int n = 9;
-                    }
-                    if (ImGui::MenuItem(vecRightClickMenuText[8][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[5][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
                     ImGui::Separator();
-                    if (ImGui::MenuItem(vecRightClickMenuText[9][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[6][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
-                    if (ImGui::MenuItem(vecRightClickMenuText[10][g_Langueage].c_str()))
+                    if (ImGui::MenuItem(vecRightClickMenuText[7][g_select_language].c_str()))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(vecRightClickMenuText[8][g_select_language].c_str()))
+                    {
+                        int n = 9;
+                    }
+                    ImGui::Separator();
+                    if (ImGui::MenuItem(vecRightClickMenuText[9][g_select_language].c_str()))
+                    {
+                        int n = 9;
+                    }
+                    if (ImGui::MenuItem(vecRightClickMenuText[10][g_select_language].c_str()))
                     {
                         int n = 9;
                     }
@@ -94,7 +94,7 @@ namespace App
             {
                 if (isOpen)
                 {
-                    ImGui::Begin(g_Langueage ? u8"½ø³Ì" : u8"Process", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+                    ImGui::Begin(g_select_language ? u8"½ø³Ì" : u8"Process", &isOpen, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
                     static ImGuiTableFlags flags =
                         ImGuiTableFlags_RowBg
                         | ImGuiTableFlags_ContextMenuInBody

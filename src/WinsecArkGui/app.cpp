@@ -12,17 +12,17 @@
 
 
 
-void App::DrawUI(unsigned int weight, unsigned int height)
+void app::draw_ui(unsigned int weight, unsigned int height)
 {
-    DrawMenuBar();
+    draw_menu_bar();
 
-    App::Window::ProcessWindow::Draw();
-    App::Window::KernelModuleWindow::Draw();
+    app::Window::ProcessWindow::Draw();
+    app::Window::KernelModuleWindow::Draw();
     Window::CommandWindow::Draw();
     Dialog::About::Draw();
 }
 
-void App::DrawMenuBar()
+void app::draw_menu_bar()
 {
     std::vector<std::vector<std::string>> vecMenuText =
     {
@@ -33,12 +33,12 @@ void App::DrawMenuBar()
     };
     if (ImGui::BeginMainMenuBar())
     {
-        if (ImGui::BeginMenu(vecMenuText[0][g_Langueage].c_str()))
+        if (ImGui::BeginMenu(vecMenuText[0][g_select_language].c_str()))
         {
 
             ImGui::EndMenu();
         }
-        if (ImGui::BeginMenu(vecMenuText[1][g_Langueage].c_str()))
+        if (ImGui::BeginMenu(vecMenuText[1][g_select_language].c_str()))
         {
             std::vector<std::vector<std::string>> vecViewText =
             {
@@ -48,34 +48,34 @@ void App::DrawMenuBar()
                 {std::vector<std::string>{u8"About" ,u8"关于"} },
             };
 
-            if (ImGui::MenuItem(vecViewText[0][g_Langueage].c_str(), nullptr, App::Window::ProcessWindow::isOpen))
+            if (ImGui::MenuItem(vecViewText[0][g_select_language].c_str(), nullptr, app::Window::ProcessWindow::isOpen))
             {
-                App::Window::ProcessWindow::isOpen = !App::Window::ProcessWindow::isOpen;
+                app::Window::ProcessWindow::isOpen = !app::Window::ProcessWindow::isOpen;
             }
-            if (ImGui::MenuItem(vecViewText[1][g_Langueage].c_str(), nullptr, App::Window::KernelModuleWindow::isOpen))
+            if (ImGui::MenuItem(vecViewText[1][g_select_language].c_str(), nullptr, app::Window::KernelModuleWindow::isOpen))
             {
-                App::Window::KernelModuleWindow::isOpen = !App::Window::KernelModuleWindow::isOpen;
+                app::Window::KernelModuleWindow::isOpen = !app::Window::KernelModuleWindow::isOpen;
             }
 
             ImGui::Separator();
             ImGui::EndMenu();
         }
-        if (ImGui::BeginMenu(vecMenuText[2][g_Langueage].c_str()))
+        if (ImGui::BeginMenu(vecMenuText[2][g_select_language].c_str()))
         {
-            if (ImGui::BeginMenu(!g_Langueage ? "Language" : u8"语言"))
+            if (ImGui::BeginMenu(!g_select_language ? "Language" : u8"语言"))
             {
                 if (ImGui::MenuItem(u8"English"))
                 {
-                    g_Langueage = 0;
+                    g_select_language = 0;
                 }
                 if (ImGui::MenuItem(u8"中文"))
                 {
-                    g_Langueage = 1;
+                    g_select_language = 1;
                 }
                 ImGui::EndMenu();
             }
             ImGui::Separator();
-            ImGui::MenuItem(vecMenuText[3][g_Langueage].c_str(), nullptr, &App::Dialog::About::isShow);
+            ImGui::MenuItem(vecMenuText[3][g_select_language].c_str(), nullptr, &app::Dialog::About::isShow);
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();

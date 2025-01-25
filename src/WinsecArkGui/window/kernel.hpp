@@ -3,7 +3,7 @@
 #include "imgui.h"
 
 
-namespace App
+namespace app
 {
     namespace Window
     {

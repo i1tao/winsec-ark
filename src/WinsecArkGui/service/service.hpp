@@ -3,7 +3,7 @@
 #include <windows.h>
 
 #include "ntdll.h"
-namespace App
+namespace app
 {
     class DrvService
     {

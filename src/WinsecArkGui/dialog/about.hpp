@@ -3,7 +3,7 @@
 #include "imgui.h"
 
 
-namespace App
+namespace app
 {
     namespace Dialog
     {
@@ -15,14 +15,14 @@ namespace App
             {
                 if (isShow)
                 {
-                    if (!ImGui::Begin(g_Langueage ? u8"关于" : "About", &isShow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking))
+                    if (!ImGui::Begin(g_select_language ? u8"关于" : "About", &isShow, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking))
                     {
                         ImGui::End();
                         return;
                     }
 
                     ImGui::Text(u8"Winsec Anti-Rookit Tool");
-                    ImGui::Text(g_Langueage ? u8"一个简单、免费的开源 Anti-Rookit 工具":u8"A simple & free open source ARK");
+                    ImGui::Text(g_select_language ? u8"一个简单、免费的开源 Anti-Rookit 工具":u8"A simple & free open source ARK");
                     ImGui::Text(u8"Author: i1tao");
                     ImGui::Text(u8"Github: https://github.com/i1tao/winsec-ark");
                     ImGui::Separator();

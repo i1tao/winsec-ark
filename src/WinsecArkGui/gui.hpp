@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
@@ -186,7 +186,7 @@ namespace Gui
 
     inline void Run()
     {
-        auto drv = App::DrvService::GetInstance();
+        auto drv = app::DrvService::GetInstance();
         //drv->InitService();
 
         CreatehWindow();
@@ -226,7 +226,7 @@ namespace Gui
 
             //// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
             ImGui::ShowDemoWindow();
-            App::DrawUI(g_d3dpp.BackBufferWidth, g_d3dpp.BackBufferHeight);
+            app::draw_ui(g_d3dpp.BackBufferWidth, g_d3dpp.BackBufferHeight);
             // Rendering
 
             ImGui::EndFrame();

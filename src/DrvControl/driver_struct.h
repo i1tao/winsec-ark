@@ -16,25 +16,25 @@
 
 
 
-namespace ark
+namespace winsec
 {
     constexpr int NeitherIoControlCode = MY_NEITHER_CTL_CODE(1);
-    namespace DataType
+    namespace data_type
     {
 
-        enum CType          
+        enum function_type          
         {
-            EnumProcess,
-            killProcess
+            enum_process,
+            kill_process
         };
 
-        typedef struct _PACKAGE
+        typedef struct ark_data_struct
         {
             INT    Code;
-            CType  OpType;
+            function_type  OpType;
             INT    DataSize;
             PCHAR  Buffer[1];
-        }PACKGE,*PPACKGE;
+        }ark_data_struct,*park_data_struct;
 
         typedef struct _PROCESS_INFO
         {

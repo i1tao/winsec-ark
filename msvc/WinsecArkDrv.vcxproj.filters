@@ -5,11 +5,11 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="src\modules">
+    <Filter Include="src\common">
       <UniqueIdentifier>{0fec5350-a7e3-47d1-a404-91468715bdb0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\third-party">
-      <UniqueIdentifier>{090988b3-8efc-456b-a791-b5789eb807ae}</UniqueIdentifier>
+    <Filter Include="src\platfrom">
+      <UniqueIdentifier>{8fb106a4-687d-483b-af0d-f139e82b3791}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -22,22 +22,22 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WinsecArkDrv\device.hpp">
-      <Filter>src\modules</Filter>
+      <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WinsecArkDrv\driver.hpp">
-      <Filter>src\modules</Filter>
+      <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\DrvControl\driver_struct.h">
-      <Filter>src\modules</Filter>
+      <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WinsecArkDrv\controller.hpp">
-      <Filter>src\modules</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\WinsecArkDrv\ps\process.hpp">
-      <Filter>src\modules</Filter>
+      <Filter>src\common</Filter>
     </ClInclude>
     <ClInclude Include="..\src\WinsecArkDrv\logger.hpp">
-      <Filter>src\modules</Filter>
+      <Filter>src\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\WinsecArkDrv\ps\process.hpp">
+      <Filter>src\platfrom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 #include <Veil.h>
 #include <ntstrsafe.h>
 
-namespace ark::Controller::Process
+namespace winsec::controller::Process
 {
     ///Interface definition
     NTSTATUS EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result);
@@ -16,7 +16,7 @@ namespace ark::Controller::Process
 }
 
 
-NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
+NTSTATUS winsec::controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
@@ -24,7 +24,7 @@ NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
     UNREFERENCED_PARAMETER(OutSize);
     UNREFERENCED_PARAMETER(IoStatusInformation);
 
-    NTSTATUS          Ntstatus = STATUS_SUCCESS;
+    NTSTATUS          status = STATUS_SUCCESS;
     PEPROCESS         Process  = nullptr;
     ULONG             InfoLen  = 0;
     HANDLE            Handle   = nullptr;
@@ -34,16 +34,16 @@ NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
     UNICODE_STRING    Name{};
 
     PSYSTEM_PROCESS_INFORMATION             SystemProcessInfo = nullptr;
-    std::map<HANDLE,DataType::PROCESS_INFO> ProcessList;
+    std::map<HANDLE,data_type::PROCESS_INFO> ProcessList;
 
 
-    Ntstatus = ZwQuerySystemInformation(
+    status = ZwQuerySystemInformation(
         SystemProcessInformation,  //SystemProcessInformation 0x5
         0,
         NULL, &InfoLen);
-    if (Ntstatus != STATUS_INFO_LENGTH_MISMATCH)
+    if (status != STATUS_INFO_LENGTH_MISMATCH)
     {
-        return Ntstatus;
+        return status;
     }
     SystemProcessInfo = static_cast<PSYSTEM_PROCESS_INFORMATION>(ExAllocatePool(NonPagedPool, InfoLen));
     if (SystemProcessInfo == nullptr)
@@ -51,7 +51,7 @@ NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
         return STATUS_MEMORY_NOT_ALLOCATED;
     }
 
-    Ntstatus = ZwQuerySystemInformation(
+    status = ZwQuerySystemInformation(
         SystemProcessInformation, //SystemProcessInformation 0x5
         SystemProcessInfo,
         InfoLen, &InfoLen);
@@ -63,15 +63,15 @@ NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
             break;
         }
         
-        Ntstatus = PsLookupProcessByProcessId((HANDLE)SystemProcessInfo->UniqueProcessId, &Process);
-        if (!NT_SUCCESS(Ntstatus))
+        status = PsLookupProcessByProcessId((HANDLE)SystemProcessInfo->UniqueProcessId, &Process);
+        if (!NT_SUCCESS(status))
         {
             continue;
         }
 
 
-        DataType::PROCESS_INFO ProcessInfo;
-        RtlZeroMemory(&ProcessInfo, sizeof(DataType::PROCESS_INFO));
+        data_type::PROCESS_INFO ProcessInfo;
+        RtlZeroMemory(&ProcessInfo, sizeof(data_type::PROCESS_INFO));
         ProcessInfo.PID      = (unsigned long long)SystemProcessInfo->UniqueProcessId;
         ProcessInfo.EProcess = (unsigned long long)Process;
         ProcessInfo.Flag     = 0;
@@ -86,10 +86,10 @@ NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
 
     for (size_t i = 0; i < 65535; i += 4)
     {
-        Ntstatus = PsLookupProcessByProcessId((HANDLE)i, &Process);
-        if (!NT_SUCCESS(Ntstatus))
+        status = PsLookupProcessByProcessId((HANDLE)i, &Process);
+        if (!NT_SUCCESS(status))
         {
-            return Ntstatus;
+            return status;
         }
 
         InitializeObjectAttributes(&ObjectAttributes, 0, OBJ_CASE_INSENSITIVE | OBJ_KERNEL_HANDLE, 0, 0);
@@ -104,8 +104,8 @@ NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
         if (it == ProcessList.end())
         {
 
-            DataType::PROCESS_INFO ProcessInfo = {};
-            RtlZeroMemory(&ProcessInfo, sizeof(DataType::PROCESS_INFO));
+            data_type::PROCESS_INFO ProcessInfo = {};
+            RtlZeroMemory(&ProcessInfo, sizeof(data_type::PROCESS_INFO));
             ProcessInfo.PID = i;
             ProcessInfo.EProcess = (unsigned long long)Process;
             ProcessInfo.Flag = 0;
@@ -126,17 +126,17 @@ NTSTATUS ark::Controller::Process::EnumProcess(PVOID InBuffer, ULONG InSize, PVO
     int i = 0;
     for (auto x : ProcessList)
     {
-        RtlCopyMemory((PVOID64)((uint64_t)InBuffer + i * sizeof(DataType::PROCESS_INFO)), &x, sizeof(DataType::PROCESS_INFO));
+        RtlCopyMemory((PVOID64)((uint64_t)InBuffer + i * sizeof(data_type::PROCESS_INFO)), &x, sizeof(data_type::PROCESS_INFO));
         i++;
     }
 
-    *IoStatusInformation = (DWORD32)(ProcessList.size() * sizeof(DataType::PROCESS_INFO));
+    *IoStatusInformation = (DWORD32)(ProcessList.size() * sizeof(data_type::PROCESS_INFO));
 
-    return Ntstatus;
+    return status;
 }
 
 
-NTSTATUS ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
+NTSTATUS winsec::controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
@@ -145,14 +145,14 @@ NTSTATUS ark::Controller::Process::SuspendProcess(PVOID InBuffer, ULONG InSize, 
     UNREFERENCED_PARAMETER(IoStatusInformation);
 
     NTSTATUS Ntstatus = STATUS_SUCCESS;
-    auto PEprocess = reinterpret_cast<PEPROCESS>(reinterpret_cast<DataType::PACKGE*>(InBuffer)->Buffer);
+    auto PEprocess = reinterpret_cast<PEPROCESS>(reinterpret_cast<data_type::ark_data_struct*>(InBuffer)->Buffer);
     Ntstatus = PsSuspendProcess(PEprocess);
 
     *IoStatusInformation = 0;
     return Ntstatus;
 }
 
-NTSTATUS ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
+NTSTATUS winsec::controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 Result)
 {
     UNREFERENCED_PARAMETER(InBuffer);
     UNREFERENCED_PARAMETER(InSize);
@@ -167,7 +167,7 @@ NTSTATUS ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVO
     CLIENT_ID cid = { 0 };
 
     InitializeObjectAttributes(&obj, NULL, OBJ_KERNEL_HANDLE | OBJ_CASE_INSENSITIVE, NULL, NULL);
-    cid.UniqueProcess = reinterpret_cast<HANDLE>(reinterpret_cast<DataType::PACKGE*>(InBuffer)->Buffer);
+    cid.UniqueProcess = reinterpret_cast<HANDLE>(reinterpret_cast<data_type::ark_data_struct*>(InBuffer)->Buffer);
     cid.UniqueThread = 0;
 
     Ntstatus = ZwOpenProcess(&ProcessHandle, GENERIC_ALL, &obj, &cid);
@@ -181,7 +181,7 @@ NTSTATUS ark::Controller::Process::KillProcess(PVOID InBuffer, ULONG InSize, PVO
     return Ntstatus;
 }
 
-NTSTATUS ark::Controller::Process::GetProcessPathAndName(HANDLE ProcessHandle, PUNICODE_STRING Path, PUNICODE_STRING Name)
+NTSTATUS winsec::controller::Process::GetProcessPathAndName(HANDLE ProcessHandle, PUNICODE_STRING Path, PUNICODE_STRING Name)
 {
     NTSTATUS Ntstatus = STATUS_SUCCESS;
     ULONG    InfoLen = 0;

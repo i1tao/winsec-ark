@@ -5,47 +5,38 @@
 
 #include "ps/process.hpp"
 
-namespace ark
+namespace winsec
 {
-    namespace Controller
+    namespace controller
     {
-		//data
-		using pfnFunction = NTSTATUS(*)(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation);
-        inline pfnFunction g_FunctionArray[] =
-		{
-			nullptr,
+		using pfn_dispatch_function = NTSTATUS(*)(PVOID in_buffer, ULONG in_size, PVOID out_buffer, ULONG out_size, PDWORD32 io_status_information);
+
+        inline std::vector<pfn_dispatch_function> g_functions =
+        {
+            nullptr,
             Process::EnumProcess,
-			Process::SuspendProcess,
-			Process::KillProcess,
-		};
+            Process::SuspendProcess,
+            Process::KillProcess,
+        };
 
-
-        NTSTATUS FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation);
+        NTSTATUS dispatcher(PVOID in_buffer, ULONG in_size, PVOID out_buffer, ULONG out_size, PDWORD32 io_status_information);
     }
 }
 
-/**
- * \brief Dispatch call functions.
- * \param InBuffer 
- * \param InSize 
- * \param OutBuffer 
- * \param OutSize 
- * \param IoStatusInformation 
- * \return 
- */
-NTSTATUS ark::Controller::FunctionDispatcher(PVOID InBuffer, ULONG InSize, PVOID OutBuffer, ULONG OutSize, PDWORD32 IoStatusInformation)
-{
-    NTSTATUS Ntstatus = STATUS_SUCCESS;
 
-	auto type = static_cast<ark::DataType::PPACKGE>(InBuffer)->OpType;
-	auto pFunc = g_FunctionArray[type];
-	if (!pFunc)
+inline NTSTATUS winsec::controller::dispatcher(PVOID in_buffer, ULONG in_size, PVOID out_buffer, ULONG out_size, PDWORD32 io_status_information)
+{
+    NTSTATUS status = STATUS_SUCCESS;
+
+	auto type = static_cast<winsec::data_type::park_data_struct>(in_buffer)->OpType;
+	auto func = g_functions[type];
+	if (!func)
 	{
-		return Ntstatus;
+		return status;
 	}
 
-	Ntstatus = pFunc(InBuffer, InSize, OutBuffer, OutSize, IoStatusInformation);
+	status = func(in_buffer, in_size, out_buffer, out_size, io_status_information);
 
-	return Ntstatus;
+	return status;
 }
 

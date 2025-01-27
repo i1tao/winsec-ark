@@ -2,7 +2,7 @@
 
 #include <stdarg.h>
 
-namespace ark::logger
+namespace winsec::logger
 {
     enum class log_level {
         error = 0,

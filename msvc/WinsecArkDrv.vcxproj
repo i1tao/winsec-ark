@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Musa.Runtime.0.4.0\build\native\Musa.Runtime.props" Condition="Exists('..\packages\Musa.Runtime.0.4.0\build\native\Musa.Runtime.props')" />
   <Import Project="..\packages\Musa.Core.0.3.6\build\native\Musa.Core.props" Condition="Exists('..\packages\Musa.Core.0.3.6\build\native\Musa.Core.props')" />
   <Import Project="..\packages\Musa.Veil.1.3.2\build\native\Musa.Veil.props" Condition="Exists('..\packages\Musa.Veil.1.3.2\build\native\Musa.Veil.props')" />
-  <Import Project="..\packages\Musa.Runtime.0.3.5\build\native\Musa.Runtime.props" Condition="Exists('..\packages\Musa.Runtime.0.3.5\build\native\Musa.Runtime.props')" />
   <Import Project="..\packages\YY.NuGet.Import.Helper.1.0.1\build\native\YY.NuGet.Import.Helper.props" Condition="Exists('..\packages\YY.NuGet.Import.Helper.1.0.1\build\native\YY.NuGet.Import.Helper.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -166,8 +166,8 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\YY.NuGet.Import.Helper.1.0.1\build\native\YY.NuGet.Import.Helper.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\YY.NuGet.Import.Helper.1.0.1\build\native\YY.NuGet.Import.Helper.props'))" />
     <Error Condition="!Exists('..\packages\YY.NuGet.Import.Helper.1.0.1\build\native\YY.NuGet.Import.Helper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\YY.NuGet.Import.Helper.1.0.1\build\native\YY.NuGet.Import.Helper.targets'))" />
-    <Error Condition="!Exists('..\packages\Musa.Runtime.0.3.5\build\native\Musa.Runtime.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Musa.Runtime.0.3.5\build\native\Musa.Runtime.props'))" />
     <Error Condition="!Exists('..\packages\Musa.Veil.1.3.2\build\native\Musa.Veil.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Musa.Veil.1.3.2\build\native\Musa.Veil.props'))" />
     <Error Condition="!Exists('..\packages\Musa.Core.0.3.6\build\native\Musa.Core.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Musa.Core.0.3.6\build\native\Musa.Core.props'))" />
+    <Error Condition="!Exists('..\packages\Musa.Runtime.0.4.0\build\native\Musa.Runtime.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Musa.Runtime.0.4.0\build\native\Musa.Runtime.props'))" />
   </Target>
 </Project>
